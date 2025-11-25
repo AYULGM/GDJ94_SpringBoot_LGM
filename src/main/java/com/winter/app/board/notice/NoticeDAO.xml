@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+    <!-- namespace는 별칭안되서 풀패키지명 스킵못함 -->
+    <!-- parameterType은 받는것이고 resultType은 주는것 -->
+    <mapper namespace="com.winter.app.board.notice.NoticeDAO">
+    	<select id="detail" resultType="NoticeDTO" parameterType="NoticeDTO">
+    		SELECT * FROM notice WHERE board_num=#{boardNum}
+    	</select>
+    	
+    	<select id="list" resultType="NoticeDTO">
+    		SELECT * FROM notice ORDER BY board_num DESC
+    	</select>
+    	
+    	<insert id="add" parameterType="NoticeDTO">
+    		INSERT INTO notice (board_title,board_writer,board_contents,board_date,board_hit)
+    		VALUES(#{boardTitle},#{boardWriter},#{boardContents},now(),0)
+    	</insert>
+    	
+    	<delete id="delete" parameterType="NoticeDTO">
+    		DELETE FROM notice WHERE board_num=#{boardNum}
+    	</delete>
+    	
+    	<update id="update" parameterType="NoticeDTO">
+    		UPDATE notice SET board_title=#{boardTitle},board_contents=#{boardContents} WHERE board_num=#{boardNum}
+    	</update>
+    </mapper>
