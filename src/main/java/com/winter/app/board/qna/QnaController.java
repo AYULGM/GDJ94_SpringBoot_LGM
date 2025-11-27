@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.winter.app.util.Pager;
@@ -26,4 +27,29 @@ public class QnaController {
 		
 		return "qna/list";
 	}
+	
+	@GetMapping("detail")
+	public void detail(QnaDTO qnaDTO, Model model) throws Exception {
+		
+		qnaDTO = qnaService.detail(qnaDTO);
+		
+		if(qnaDTO == null) {
+			
+		}
+		
+		model.addAttribute("dto", qnaDTO);
+	}
+	
+	@GetMapping("add")
+	public void add() throws Exception{}
+	
+	@PostMapping("add")
+	public String add(QnaDTO qnaDTO) throws Exception{
+		int result = qnaService.add(qnaDTO);
+		
+		return "redirect:./list";
+	}
+	
+	// 리스트에서 글쓰기버튼을 클릭하면 질문글을 입력하는 폼이 나오게
+	
 }

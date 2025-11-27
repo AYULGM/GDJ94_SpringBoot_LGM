@@ -5,16 +5,41 @@
     <!-- namespace는 별칭안되서 풀패키지명 스킵못함 -->
     <!-- parameterType은 받는것이고 resultType은 주는것 -->
     <mapper namespace="com.winter.app.board.notice.NoticeDAO">
+    	<!-- 반복되는 쿼리를 모아놓은 것 -->
+    	<sql id="search">
+    		<if test="kind == 'k1'">
+    			WHERE board_title LIKE concat('%',#{search},'%')
+    		</if>
+    		<if test="kind == 'k2'">
+    			WHERE board_contents LIKE concat('%',#{search},'%')
+    		</if>
+    		<if test="kind == 'k3'">
+    			WHERE board_writer LIKE concat('%',#{search},'%')
+    		</if>
+    		<!--  이렇게할수도있다.<choose>
+    			<when test=""></when>
+    			<when test=""></when>
+    			<otherwise></otherwise>
+    		</choose> -->
+    	</sql>
+    
     	<select id="detail" resultType="NoticeDTO" parameterType="NoticeDTO">
     		SELECT * FROM notice WHERE board_num=#{boardNum}
     	</select>
     	
-    	<select id="count" resultType="Long">
+    	<!-- 새로 Pager타입의 parameterType을 추가한다. -->
+    	<select id="count" resultType="Long" parameterType="Pager">
     		SELECT COUNT(board_num) FROM notice
+			<include refid="search"/>
     	</select>
     	
+    	<!-- 옵션3개라 똑같은 쿼리를  3개를 써야하는 비효율성 board_title, board_writer, board_contents 비효율적이라 2번째 대안인 mybatis에 내장된 태그를 쓰는게 나음 -->
+    	<!-- WHERE문에는 변수를 쓸 순없음, concat을 쓰는이유는 하나의 문자열로 합치기위함. -->
     	<select id="list" resultType="NoticeDTO" parameterType="Pager">
-    		SELECT * FROM notice ORDER BY board_num DESC
+    		SELECT * 
+    		FROM notice 
+			<include refid="search"/>
+    		ORDER BY board_num DESC
     		LIMIT #{startNum}, #{perPage}
     	</select>
     	

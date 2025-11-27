@@ -36,8 +36,23 @@
                         <i class="fas fa-download fa-sm text-white-50"></i> Generate Report</a>
                     </div>
                     <!-- Content Row -->
-                    <div class="row justify-content-center">
-                    
+                    <div class="justify-content-center">
+                    <!-- 어차피 URL같은위치인 list로 가니까 action 생략 ,get방식인데 form태그 기본이 get이니 생략 -->
+                      <form>
+	                    <div class="input-group mb-3">
+	                    
+						    <select class="form-control" name="kind">
+						      <option value="k1">Title</option>
+						      <option value="k2">Contents</option>
+						      <option value="k3">Writer</option>
+						    </select>
+	                    
+						  <input type="text" class="form-control" name="search" placeholder="Recipient's username" aria-label="Recipient's username" aria-describedby="button-addon2">
+						  <div class="input-group-append">
+						    <button class="btn btn-outline-secondary" type="submit" id="button-addon2">Button</button>
+						  </div>
+						</div>
+                      </form>
                     <!-- 생성한 contents 작성(내용이 바뀌는부분) -->
                     <table class="table col-sm-8 mt-5">
 						  <thead class="thead-dark">
@@ -50,36 +65,42 @@
 						    </tr>
 						  </thead>
 						  <tbody>
-						  	<c:forEach items="${list}" var="list">
+						  	<c:forEach items="${list}" var="dto">
 							    <tr>
-							      <th scope="row">${list.boardNum}</th>
-							      <td>${list.boardTitle}</td>
-							      <td>${list.boardWriter}</td>
-							      <td>${list.boardDate}</td>
-							      <td>${list.boardHit}</td>
+							      <th scope="row">${dto.boardNum}</th>
+							      <td><a href="./detail?boardNum=${dto.boardNum}">${dto.boardTitle}</a></td>
+							      <td>${dto.boardWriter}</td>
+							      <td>${dto.boardDate}</td>
+							      <td>${dto.boardHit}</td>
 							    </tr>
 						    </c:forEach>
 						  </tbody>
 						</table>
                     </div>
-                    <div class="row justify-content-center">
+                    <div class="row justify-content-between col-sm-8 offset-sm-2">
 						<nav aria-label="Page navigation example">
 						  <ul class="pagination">
 						    <li class="page-item">
-						      <a class="page-link" href="./list?page=${pager.begin - 1}" aria-label="Previous">
+						      <a class="page-link" href="./list?page=${pager.begin - 1}&kind=${pager.kind}&search=${param.search}" aria-label="Previous">
 						        <span aria-hidden="true">&laquo;</span>
 						      </a>
 						    </li>
 						    	<c:forEach begin="${pager.begin}" end="${pager.end}" var="i">
-						    		<li class="page-item"><a class="page-link" href="./list?page=${i}">${i}</a></li>
+						    	<!-- pager에서 꺼내도 되고 파라미터로 보내니까 param.kind라고 해도됨 -->
+						    		<li class="page-item"><a class="page-link" href="./list?page=${i}&kind=${pager.kind}&search=${param.search}">${i}</a></li>
 						    	</c:forEach>
 						    <li class="page-item">
-						      <a class="page-link" href="./list?page=${pager.end + 1}" aria-label="Next">
+						      <a class="page-link" href="./list?page=${pager.end + 1}&kind=${pager.kind}&search=${param.search}" aria-label="Next">
 						        <span aria-hidden="true">&raquo;</span>
 						      </a>
 						    </li>
 						  </ul>
 						</nav>
+						
+						<div>
+							<a href="./add" class="btn btn-primary">글쓰기</a>
+						</div>
+						
                     </div>
                     
 				</div>

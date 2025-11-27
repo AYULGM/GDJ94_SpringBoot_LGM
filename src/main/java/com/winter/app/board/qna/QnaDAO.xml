@@ -4,17 +4,43 @@
     "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
     
     <mapper namespace="com.winter.app.board.qna.QnaDAO">
-    	<select id="count" resultType="Long">
+    	<sql id="search">
+    		<if test="kind == 'k1'">
+    			WHERE board_title LIKE concat('%',#{search},'%')
+    		</if>
+    		<if test="kind == 'k2'">
+    			WHERE board_contents LIKE concat('%',#{search},'%')
+    		</if>
+    		<if test="kind == 'k3'">
+    			WHERE board_writer LIKE concat('%',#{search},'%')
+    		</if>
+    	</sql>
+    
+    	<select id="detail" resultType="QnaDTO" parameterType="QnaDTO">
+    		SELECT * FROM qna WHERE board_num=#{boardNum}
+    	</select>
+    
+    	<select id="count" resultType="Long" parameterType="Pager">
     		SELECT COUNT(board_num) FROM qna
+    		<include refid="search"></include>
     	</select>
     
     	<select id="list" resultType="QnaDTO" parameterType="Pager">
-    		SELECT * FROM qna ORDER BY board_num DESC
+    		SELECT * 
+    		FROM qna 
+    		<include refid="search"></include>
+    		ORDER BY board_num DESC
+    		<!-- ORDER BY REF DESC, STEP ASC -->
     		LIMIT #{startNum}, #{perPage}
     	</select>
     	
-    	<insert id="add" parameterType="QnaDTO">
+    	<!-- 키를생성(AutoIncrement)하고, 키의 속성 -->
+    	<insert id="add" parameterType="QnaDTO" useGeneratedKeys="true" keyProperty="board_num">
     		INSERT INTO qna (board_num,board_title,board_writer,board_contents,board_date,board_hit,board_ref,board_step,board_depth)
-			VALUES(0,#{boardTitle},#{boardWriter},#{boardContents},now(),0,0,0,0)
+			VALUES(0,#{boardTitle},#{boardWriter},#{boardContents},now(), 0, 0, 0, 0)
     	</insert>
+    	
+    	<update id="refUpdate" parameterType="QnaDTO">
+    		UPDATE qna SET board_ref=#{boardNum} WHERE board_num=#{boardNum}
+    	</update>
     </mapper>

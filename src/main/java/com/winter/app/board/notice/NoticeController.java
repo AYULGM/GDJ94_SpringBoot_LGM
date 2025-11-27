@@ -6,8 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import com.winter.app.util.Pager;
 
@@ -33,6 +33,51 @@ public class NoticeController {
 		model.addAttribute("pager", pager);
 		
 		return "notice/list";
-		
 	}
+	
+	@GetMapping("detail")
+	public void detail(NoticeDTO noticeDTO,  Model model) throws Exception {
+		
+		noticeDTO = noticeService.detail(noticeDTO);
+		
+		// null(조회 실패시 처리는 배운대로 알아서)
+		if(noticeDTO == null) {
+			
+		}
+		
+		// jsp로 보내려면 model이 필요하다.
+		model.addAttribute("dto", noticeDTO);
+		// return "notice/detail";
+	}
+	
+	// 내가한거
+//	@GetMapping("add")
+//	public String add() {
+//		return "notice/add";
+//	}
+	
+	// 쌤이한거
+	@GetMapping("add")
+	public void add1() throws Exception {}
+	// 저절로 URL따라감
+	
+	// 내가한거
+//	@PostMapping("add")
+//	public String add(NoticeDTO noticeDTO) throws Exception {
+//		System.out.println(noticeDTO.getBoardWriter());
+//		System.out.println(noticeDTO.getBoardTitle());
+//		System.out.println(noticeDTO.getBoardContents());
+//		noticeService.add(noticeDTO);
+//		
+//		return "redirect:/notice/list";
+//	}
+	
+	// 썜이한거
+	@PostMapping("add")
+	public String add1(NoticeDTO noticeDTO) throws Exception {
+		int result = noticeService.add(noticeDTO);
+		
+		return "redirect:./list";
+	}
+	
 }
