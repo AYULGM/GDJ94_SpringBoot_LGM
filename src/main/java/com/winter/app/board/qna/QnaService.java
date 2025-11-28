@@ -34,18 +34,16 @@ public class QnaService implements BoardService {
 		return result;
 	}
 
-	@Override
-	public int delete(BoardDTO boardDTO) throws Exception {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
+    @Override
 	public int update(BoardDTO boardDTO) throws Exception {
-		// TODO Auto-generated method stub
-		return 0;
+		return qnaDAO.update(boardDTO);
 	}
 	
+    @Override
+    public int delete(BoardDTO boardDTO) throws Exception {
+    	return qnaDAO.delete(boardDTO);
+    }
+    
 	// BoardDTO로 받아도됨
 	public int reply(QnaDTO qnaDTO) throws Exception{
 		// 1. 부모의 정보를 조회

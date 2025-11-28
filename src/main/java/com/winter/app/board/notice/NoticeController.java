@@ -95,4 +95,46 @@ public class NoticeController {
 		return "redirect:./list";
 	}
 	
+	@GetMapping("update")
+	public String update(BoardDTO boardDTO, Model model) throws Exception { //noticeDTO도 됨
+
+	    // 기존 글 정보 가져오기
+	    boardDTO = noticeService.detail(boardDTO);
+	    // noticeDTO = (NoticeDTO)noticeService.detail(noticeDTO); 이렇게 해도됨
+
+//	    if(boardDTO == null) {
+//	        model.addAttribute("msg", "글이 존재하지 않습니다.");
+//	        model.addAttribute("path", "./list");
+//	        return "commons/result";
+//	    }
+
+	    // JSP로 전달
+	    model.addAttribute("dto", boardDTO);
+	    model.addAttribute("sub", "Update"); //추가
+
+		
+//		 return "board/update";
+		  return "board/add";
+	}
+	
+	@PostMapping("update")
+	//noticeDTO라고 해도됨 이것두..
+	public String update2(BoardDTO boardDTO) throws Exception {
+
+	    int result = noticeService.update(boardDTO);
+
+//	    String message = (result > 0) ? "글 수정 성공" : "글 수정 실패";
+//
+//	    model.addAttribute("msg", message);
+//	    model.addAttribute("path", "./list");
+
+	    return "redirect:./detail?boardNum=" + boardDTO.getBoardNum();
+	}
+	
+	@PostMapping("delete")
+	public String delete(NoticeDTO noticeDTO) throws Exception {
+		int result = noticeService.delete(noticeDTO);
+		
+		return "redirect:./list";
+	}
 }

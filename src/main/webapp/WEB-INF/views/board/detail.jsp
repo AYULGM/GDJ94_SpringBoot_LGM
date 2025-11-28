@@ -57,6 +57,12 @@
 					  	<c:if test="${category ne 'Notice'}">
 					  	<a href="./reply?boardNum=${dto.boardNum}" class="btn btn-danger">답글</a>
 					  	</c:if>
+					  	
+							<a href="./update?boardNum=${dto.boardNum}" class="btn btn-secondary">글 수정</a>
+							<form action="./delete" method="post">
+								<input type="hidden" name="boardNum" value="${dto.boardNum}">
+								<button id="del" class="btn btn-danger">Delete</button>
+							</form>
 					  </div>
                     </div>
 				</div>

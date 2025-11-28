@@ -40,6 +40,10 @@
 			VALUES(0,#{boardTitle},#{boardWriter},#{boardContents},now(), 0, #{boardRef}, #{boardStep}, #{boardDepth})
     	</insert>
     	
+    	<update id="update" parameterType="QnaDTO">
+    		UPDATE qna SET board_title=#{boardTitle},board_contents=#{boardContents} WHERE board_num=#{boardNum}
+    	</update>
+    	
     	<update id="refUpdate" parameterType="QnaDTO">
     		UPDATE qna SET board_ref=#{boardNum} WHERE board_num=#{boardNum}
     	</update>
@@ -48,4 +52,7 @@
     		UPDATE qna SET board_step=board_step+1 WHERE board_ref=#{boardRef} AND board_step>#{boardStep}
     	</update>
     	
+	    <delete id="delete" parameterType="QnaDTO">
+    		DELETE FROM qna WHERE board_num=#{boardNum}
+    	</delete>
     </mapper>

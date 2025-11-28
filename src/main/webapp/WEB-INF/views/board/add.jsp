@@ -33,7 +33,7 @@
                 <div class="container-fluid">				
                     <!-- Page Heading -->
                     <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                        <h1 class="h3 mb-0 text-gray-800">글 작성 페이지</h1>
+                        <h1 class="h3 mb-0 text-gray-800">${category} ${sub}</h1>
                         <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
                         <i class="fas fa-download fa-sm text-white-50"></i> Generate Report</a>
                     </div>
@@ -48,16 +48,16 @@
 					  <input type="hidden" name="boardNum" value="${dto.boardNum}">
 					  <div class="form-group">
 					    <label for="writer">작성자</label>
-					    <input type="text" class="form-control" id="writer" name="boardWriter">
+					    <input type="text" class="form-control" value="${dto.boardWriter}" id="writer" name="boardWriter">
 					    <small id="emailHelp" class="form-text text-muted">name 또는 nickname을 입력하시면 됩니다.</small>
 					  </div>
 					  <div class="form-group">
 					    <label for="title">글 제목</label>
-					    <input type="text" class="form-control" id="title" name="boardTitle">
+					    <input type="text" class="form-control" value="${dto.boardTitle}" id="title" name="boardTitle">
 					  </div>
 					  <div class="form-group">
 					    <label for="contents">글 내용</label>
-					    <textarea class="form-control" id="contents" rows="3" name="boardContents"></textarea>
+					    <textarea class="form-control" id="contents" rows="3" name="boardContents">${dto.boardContents}</textarea>
 					  </div>
 					  <button type="submit" class="btn btn-primary">Submit</button>
 					</form>

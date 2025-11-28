@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.winter.app.board.BoardDTO;
+import com.winter.app.board.notice.NoticeDTO;
 import com.winter.app.util.Pager;
 
 @Controller
@@ -85,6 +86,48 @@ public class QnaController {
 	@PostMapping("reply")
 	public String reply(QnaDTO qnaDTO) throws Exception {
 		int result = qnaService.reply(qnaDTO);
+		
+		return "redirect:./list";
+	}
+	
+	@GetMapping("update")
+	public String update(BoardDTO boardDTO, Model model) throws Exception { //qnaDTO도 됨
+
+	    // 기존 글 정보 가져오기
+	    boardDTO = qnaService.detail(boardDTO);
+	    // qnaDTO = (NoticeDTO)qnaService.detail(qnaDTO); 이렇게 해도됨
+
+//	    if(boardDTO == null) {
+//	        model.addAttribute("msg", "글이 존재하지 않습니다.");
+//	        model.addAttribute("path", "./list");
+//	        return "commons/result";
+//	    }
+
+	    // JSP로 전달
+	    model.addAttribute("dto", boardDTO);
+	    model.addAttribute("sub", "Update"); //추가
+
+		
+//		 return "board/update";
+		  return "board/add";
+	}
+	
+	@PostMapping("update")
+	public String update2(BoardDTO boardDTO) throws Exception {
+
+	    int result = qnaService.update(boardDTO);
+
+//	    String message = (result > 0) ? "글 수정 성공" : "글 수정 실패";
+//
+//	    model.addAttribute("msg", message);
+//	    model.addAttribute("path", "./list");
+
+	    return "redirect:./detail?boardNum=" + boardDTO.getBoardNum();
+	}
+	
+	@PostMapping("delete")
+	public String delete(QnaDTO qnaDTO) throws Exception {
+		int result = qnaService.delete(qnaDTO);
 		
 		return "redirect:./list";
 	}
