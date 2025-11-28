@@ -31,13 +31,12 @@
                 <div class="container-fluid">				
                     <!-- Page Heading -->
                     <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                        <h1 class="h3 mb-0 text-gray-800">디테일 페이지</h1>
+                        <h1 class="h3 mb-0 text-gray-800">${category} Detail Page</h1>
                         <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
                         <i class="fas fa-download fa-sm text-white-50"></i> Generate Report</a>
                     </div>
                     <!-- Content Row -->
                     <div>
-                    
                     <!-- 생성한 contents 작성(내용이 바뀌는부분) -->
 					  <div>
 					  	<h4>작성자</h4>
@@ -52,6 +51,12 @@
 					  <div>
 					    <h4>글 내용</h4>
 					    <div class="form-control" id="exampleInputContents1" rows="3" name="boardContents" readonly>${dto.boardContents}</div>
+					  </div>
+					  <div class="card-footer">
+					  <!-- a태그는 get방식이므로 파라미터(클라이언트->서버에 보내는 데이터)를 보낼때 href URL에 담아서 보냄 -->
+					  	<c:if test="${category ne 'Notice'}">
+					  	<a href="./reply?boardNum=${dto.boardNum}" class="btn btn-danger">답글</a>
+					  	</c:if>
 					  </div>
                     </div>
 				</div>

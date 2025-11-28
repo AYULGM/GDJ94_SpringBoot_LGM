@@ -31,7 +31,7 @@
                 <div class="container-fluid">				
                     <!-- Page Heading -->
                     <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                        <h1 class="h3 mb-0 text-gray-800">공지사항</h1>
+                        <h1 class="h3 mb-0 text-gray-800">${category}</h1>
                         <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
                         <i class="fas fa-download fa-sm text-white-50"></i> Generate Report</a>
                     </div>
@@ -68,7 +68,15 @@
 						  	<c:forEach items="${list}" var="dto">
 							    <tr>
 							      <th scope="row">${dto.boardNum}</th>
-							      <td><a href="./detail?boardNum=${dto.boardNum}">${dto.boardTitle}</a></td>
+							      <td>
+							      <!-- JSTL에서 try-catch와 같은효과를 가진 c:catch , notice에선 boardDepth가 없기때문에 쓴다.-->
+							      <!-- 딱히 예외처리 할게없어서 안씀 -->
+							      <c:catch>
+							      <!-- begin="0"이라 하면 boardDepth가 0이라면 for문이 한번 돌기때문에 1이라 함 -->
+							      <c:forEach begin="1" end="${dto.boardDepth}">--</c:forEach>
+							      </c:catch>
+							      <a href="./detail?boardNum=${dto.boardNum}">${dto.boardTitle}</a>
+							      </td>
 							      <td>${dto.boardWriter}</td>
 							      <td>${dto.boardDate}</td>
 							      <td>${dto.boardHit}</td>

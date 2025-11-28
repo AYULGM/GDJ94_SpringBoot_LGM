@@ -10,5 +10,5 @@ public interface QnaDAO extends BoardDAO{
 	
 	public int refUpdate(BoardDTO boardDTO) throws Exception;
 	
-	//접근지정자 데이터타입 메서드명(매개변수)
+	public int stepUpdate(QnaDTO qnaDTO) throws Exception;
 }

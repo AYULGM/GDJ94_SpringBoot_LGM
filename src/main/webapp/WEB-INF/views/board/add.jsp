@@ -42,8 +42,10 @@
                     
                     <!-- 생성한 contents 작성(내용이 바뀌는부분) -->
                     <!-- name은 DTO로 가니까 Setter의 이름과 동일하게 -->
-                    <!-- action은 ./add 또는 액션태그 자체를 안써도됨(안쓰면 현재URL로이동하니까) -->
-					<form action="./add" method="post">
+                    <!-- action은 액션태그 자체를 안써도됨(안쓰면 현재URL로이동하니까) -->
+					<form method="post">
+					<!-- 개발자도구 열어보면 value값이 들어간게 보인다. -->
+					  <input type="hidden" name="boardNum" value="${dto.boardNum}">
 					  <div class="form-group">
 					    <label for="writer">작성자</label>
 					    <input type="text" class="form-control" id="writer" name="boardWriter">

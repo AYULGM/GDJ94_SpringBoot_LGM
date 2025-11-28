@@ -3,9 +3,11 @@ package com.winter.app.board.qna;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -18,6 +20,16 @@ public class QnaController {
 
 	@Autowired
 	private QnaService qnaService;
+	
+	@Value("${category.board.qna}")
+	// spring에서 제공하는 value어노테이션을 사용(롬복말고)
+	// properties에서 자바쪽으로 땡겨올때 @Value를 사용
+	private String category;
+	
+	@ModelAttribute("category") // 모든 메서드마다 Model을 집어넣는걸 대신해줌(모델 객체에 넣는다고 생각해도 됨,모델은 즉 request니까)
+	public String getCategory() {
+		return this.category;
+	}
 	
 	@GetMapping("list")
 	public String list(Pager pager, Model model) throws Exception {
@@ -51,11 +63,29 @@ public class QnaController {
 	@PostMapping("add")
 	// writer title contents 받음. Board로 받아도되고 Qna로 받아도되고
 	public String add(QnaDTO qnaDTO) throws Exception{
+		// 0으로 초기화하려면 이렇게 set해서 코드 3줄넣거나, QnaDTO.java에서 참조타입의 기본값이 null이니 원시타입(long)으로
+		// 바꿔주면 기본값이 0이니 Long -> long으로 바꾸거나 아니면 QnaDTO.java에서 getter로 넘겨줄때 조건문(0일때)를 건다.
+		// 총 3가지 방법(더있긴한데)중에 고르면 됨
+		// 방법1.
+		qnaDTO.setBoardRef(0L);
+		qnaDTO.setBoardDepth(0L);
+		qnaDTO.setBoardStep(0L);
 		int result = qnaService.add(qnaDTO);
-		
+		BoardDTO boardDTO = qnaDTO;
 		return "redirect:./list";
 	}
 	
-	// 리스트에서 글쓰기버튼을 클릭하면 질문글을 입력하는 폼이 나오게
+	@GetMapping("reply")
+	public String reply(QnaDTO qnaDTO, Model model) throws Exception {
+		model.addAttribute("dto", qnaDTO);
+		
+		return "board/add"; // 어차피 writer,title,contents 쓰는거 똑같아서재활용
+	}
 	
+	@PostMapping("reply")
+	public String reply(QnaDTO qnaDTO) throws Exception {
+		int result = qnaService.reply(qnaDTO);
+		
+		return "redirect:./list";
+	}
 }

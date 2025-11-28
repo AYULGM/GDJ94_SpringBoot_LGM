@@ -29,18 +29,23 @@
     		SELECT * 
     		FROM qna 
     		<include refid="search"></include>
-    		ORDER BY board_num DESC
-    		<!-- ORDER BY REF DESC, STEP ASC -->
+    		<!-- ORDER BY board_num DESC -->
+    		ORDER BY board_ref DESC, board_step ASC
     		LIMIT #{startNum}, #{perPage}
     	</select>
     	
-    	<!-- 키를생성(AutoIncrement)하고, 키의 속성 -->
+    	<!-- 키를 생성(AutoIncrement)하고, 키의 속성은 boardNum -->
     	<insert id="add" parameterType="QnaDTO" useGeneratedKeys="true" keyProperty="boardNum">
     		INSERT INTO qna (board_num,board_title,board_writer,board_contents,board_date,board_hit,board_ref,board_step,board_depth)
-			VALUES(0,#{boardTitle},#{boardWriter},#{boardContents},now(), 0, 0, 0, 0)
+			VALUES(0,#{boardTitle},#{boardWriter},#{boardContents},now(), 0, #{boardRef}, #{boardStep}, #{boardDepth})
     	</insert>
     	
     	<update id="refUpdate" parameterType="QnaDTO">
     		UPDATE qna SET board_ref=#{boardNum} WHERE board_num=#{boardNum}
     	</update>
+    	
+    	<update id="stepUpdate" parameterType="QnaDTO">
+    		UPDATE qna SET board_step=board_step+1 WHERE board_ref=#{boardRef} AND board_step>#{boardStep}
+    	</update>
+    	
     </mapper>

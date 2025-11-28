@@ -14,6 +14,14 @@ public class QnaDTO extends BoardDTO{
 
 	private Long boardRef;
 	private Long boardStep;
-	private Long boardDepth;
+	// 방법2. 원시타입으로 바꿔서 0으로 초기화
+	private long boardDepth;
 	
+	// 방법3. 롬복이 만드는게 아니라 우리가 직접 만들어서 수정하는 방법
+	public Long getBoardRef() {
+		if(this.boardRef == null) {
+			this.boardRef = 0L;
+		}
+		return this.boardRef;
+	}
 }

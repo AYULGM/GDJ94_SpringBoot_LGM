@@ -3,9 +3,11 @@ package com.winter.app.board.notice;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -22,6 +24,15 @@ public class NoticeController {
 
 	@Autowired
 	private NoticeService noticeService;
+	
+	@Value("${category.board.notice}")
+	// spring에서 제공하는 value어노테이션을 사용(롬복말고)
+	private String category;
+	
+	@ModelAttribute("category") // 모든 메서드마다 Model을 집어넣는걸 대신해줌
+	public String getCategory() {
+		return this.category;
+	}
 	
 	@GetMapping("list")
 	// public String list(@RequestParam(defaultValue = "1") Long page, Model model) throws Exception{ // Long page의 기본값을 1로 설정(참조타입 기본값인 null 방지)
