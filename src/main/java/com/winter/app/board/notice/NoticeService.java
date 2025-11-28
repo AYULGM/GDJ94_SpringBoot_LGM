@@ -5,16 +5,18 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.winter.app.board.BoardDTO;
+import com.winter.app.board.BoardService;
 import com.winter.app.util.Pager;
 
 @Service
-public class NoticeService {
+public class NoticeService implements BoardService{
 
 	@Autowired
 	private NoticeDAO noticeDAO;
 	
-	// public List<NoticeDTO> list(Long page, Pager pager) throws Exception {
-		public List<NoticeDTO> list(Pager pager) throws Exception {
+		@Override
+		public List<BoardDTO> list(Pager pager) throws Exception {
 			// 1. totalCount 구하기
 			Long totalCount = noticeDAO.count(pager);
 			pager.pageing(totalCount);
@@ -22,20 +24,21 @@ public class NoticeService {
 		return noticeDAO.list(pager);
 	}
 	
-	public NoticeDTO detail(NoticeDTO noticeDTO) throws Exception {
-		return noticeDAO.detail(noticeDTO);
+    @Override
+	public BoardDTO detail(BoardDTO boardDTO) throws Exception {
+		return noticeDAO.detail(boardDTO);
 	}
-	
-	public int add(NoticeDTO noticeDTO) throws Exception {
-		return noticeDAO.add(noticeDTO);
+    @Override
+	public int add(BoardDTO boardDTO) throws Exception {
+		return noticeDAO.add(boardDTO);
 	}
-	
-	public int delete(NoticeDTO noticeDTO) throws Exception {
-		return noticeDAO.delete(noticeDTO);
+    @Override
+	public int delete(BoardDTO boardDTO) throws Exception {
+		return noticeDAO.delete(boardDTO);
 	}
-	
-	public int update(NoticeDTO noticeDTO) throws Exception {
-		return noticeDAO.update(noticeDTO);
+    @Override
+	public int update(BoardDTO boardDTO) throws Exception {
+		return noticeDAO.update(boardDTO);
 	}
 	
 	

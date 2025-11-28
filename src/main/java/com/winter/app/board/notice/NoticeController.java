@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.winter.app.board.BoardDTO;
 import com.winter.app.util.Pager;
 
 import lombok.extern.slf4j.Slf4j;
@@ -27,7 +28,7 @@ public class NoticeController {
 		public String list(Pager pager, Model model) throws Exception{ // Pager 객체안에 page를 넣었음
 		// Pager pager = new Pager(); // Heap에 Pager 객체를 만들어라. (참고로 지역변수는 Stack에 만들어짐)
 		// List<NoticeDTO> ar = noticeService.list(page, pager);
-		List<NoticeDTO> ar = noticeService.list(pager); //pager안에 page를 넣었으니 둘이 합쳐서 pager하나만 매개변수 받음
+		List<BoardDTO> ar = noticeService.list(pager); //pager안에 page를 넣었으니 둘이 합쳐서 pager하나만 매개변수 받음
 		
 		model.addAttribute("list", ar);
 		model.addAttribute("pager", pager);
@@ -36,17 +37,17 @@ public class NoticeController {
 	}
 	
 	@GetMapping("detail")
-	public void detail(NoticeDTO noticeDTO,  Model model) throws Exception {
+	public void detail(BoardDTO boardDTO,  Model model) throws Exception {
 		
-		noticeDTO = noticeService.detail(noticeDTO);
+		boardDTO = noticeService.detail(boardDTO);
 		
 		// null(조회 실패시 처리는 배운대로 알아서)
-		if(noticeDTO == null) {
+		if(boardDTO == null) {
 			
 		}
 		
 		// jsp로 보내려면 model이 필요하다.
-		model.addAttribute("dto", noticeDTO);
+		model.addAttribute("dto", boardDTO);
 		// return "notice/detail";
 	}
 	
@@ -58,7 +59,7 @@ public class NoticeController {
 	
 	// 쌤이한거
 	@GetMapping("add")
-	public void add1() throws Exception {}
+	public void add() throws Exception {}
 	// 저절로 URL따라감
 	
 	// 내가한거
@@ -74,7 +75,8 @@ public class NoticeController {
 	
 	// 썜이한거
 	@PostMapping("add")
-	public String add1(NoticeDTO noticeDTO) throws Exception {
+	// BoardDTO로도 받아도된다. 어차피 넘어오는 값이 공통된 3개 Writer 어쩌구 어쩌구니까.
+	public String add(NoticeDTO noticeDTO) throws Exception {
 		int result = noticeService.add(noticeDTO);
 		
 		return "redirect:./list";

@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.winter.app.board.BoardDTO;
 import com.winter.app.util.Pager;
 
 @Controller
@@ -20,7 +21,7 @@ public class QnaController {
 	
 	@GetMapping("list")
 	public String list(Pager pager, Model model) throws Exception {
-		List<QnaDTO> ar = qnaService.list(pager);
+		List<BoardDTO> ar = qnaService.list(pager);
 		
 		model.addAttribute("listQna", ar);
 		model.addAttribute("pager", pager);
@@ -29,11 +30,11 @@ public class QnaController {
 	}
 	
 	@GetMapping("detail")
-	public void detail(QnaDTO qnaDTO, Model model) throws Exception {
+	public void detail(BoardDTO boardDTO, Model model) throws Exception {
 		
-		qnaDTO = qnaService.detail(qnaDTO);
+		boardDTO = qnaService.detail(boardDTO);
 		
-		if(qnaDTO == null) {
+		if(boardDTO == null) {
 			
 		}
 		
@@ -44,6 +45,7 @@ public class QnaController {
 	public void add() throws Exception{}
 	
 	@PostMapping("add")
+	// writer title contents 받음. Board로 받아도되고 Qna로 받아도되고
 	public String add(QnaDTO qnaDTO) throws Exception{
 		int result = qnaService.add(qnaDTO);
 		

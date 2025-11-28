@@ -5,31 +5,47 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.winter.app.board.BoardDTO;
+import com.winter.app.board.BoardService;
 import com.winter.app.util.Pager;
 
 @Service
-public class QnaService {
+public class QnaService implements BoardService {
 
 	@Autowired
 	private QnaDAO qnaDAO;
-	
-	public List<QnaDTO> list(Pager pager) throws Exception {
+
+	public List<BoardDTO> list(Pager pager) throws Exception {
 		Long totalCount = qnaDAO.count(pager);
 		pager.pageing(totalCount);
 		
 		return qnaDAO.list(pager);
 	}
 	
-	public QnaDTO detail(QnaDTO qnaDTO) throws Exception {
-		return qnaDAO.detail(qnaDTO);
+	public BoardDTO detail(BoardDTO boardDTO) throws Exception {
+		return qnaDAO.detail(boardDTO);
 	}
 	
-	public int add(QnaDTO qnaDTO) throws Exception {
+	public int add(BoardDTO boardDTO) throws Exception {
 		// 순서가 add를 먼저 호출하고 그다음에 업데이트 
-		int result = qnaDAO.add(qnaDTO);
-		qnaDAO.refUpdate(qnaDTO);
+		int result = qnaDAO.add(boardDTO);
+		qnaDAO.refUpdate(boardDTO);
 		
 		return result;
 	}
+
+	@Override
+	public int delete(BoardDTO boardDTO) throws Exception {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public int update(BoardDTO boardDTO) throws Exception {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+	
+
 	
 }
