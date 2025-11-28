@@ -23,14 +23,14 @@ public class QnaController {
 	public String list(Pager pager, Model model) throws Exception {
 		List<BoardDTO> ar = qnaService.list(pager);
 		
-		model.addAttribute("listQna", ar);
+		model.addAttribute("list", ar);
 		model.addAttribute("pager", pager);
 		
-		return "qna/list";
+		return "board/list";
 	}
 	
 	@GetMapping("detail")
-	public void detail(BoardDTO boardDTO, Model model) throws Exception {
+	public String detail(BoardDTO boardDTO, Model model) throws Exception {
 		
 		boardDTO = qnaService.detail(boardDTO);
 		
@@ -38,11 +38,15 @@ public class QnaController {
 			
 		}
 		
-		model.addAttribute("dto", qnaDTO);
+		model.addAttribute("dto", boardDTO);
+		return "board/detail";
 	}
 	
 	@GetMapping("add")
-	public void add() throws Exception{}
+	public String add() throws Exception{
+		
+		return "board/add"; // 안써주면 qna/add로 가려던걸 다르게 지정함
+	}
 	
 	@PostMapping("add")
 	// writer title contents 받음. Board로 받아도되고 Qna로 받아도되고

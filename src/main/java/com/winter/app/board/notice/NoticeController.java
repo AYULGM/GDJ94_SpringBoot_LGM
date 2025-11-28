@@ -33,11 +33,11 @@ public class NoticeController {
 		model.addAttribute("list", ar);
 		model.addAttribute("pager", pager);
 		
-		return "notice/list";
+		return "board/list";
 	}
 	
 	@GetMapping("detail")
-	public void detail(BoardDTO boardDTO,  Model model) throws Exception {
+	public String detail(BoardDTO boardDTO,  Model model) throws Exception {
 		
 		boardDTO = noticeService.detail(boardDTO);
 		
@@ -48,7 +48,7 @@ public class NoticeController {
 		
 		// jsp로 보내려면 model이 필요하다.
 		model.addAttribute("dto", boardDTO);
-		// return "notice/detail";
+		return "board/detail";
 	}
 	
 	// 내가한거
@@ -59,8 +59,10 @@ public class NoticeController {
 	
 	// 쌤이한거
 	@GetMapping("add")
-	public void add() throws Exception {}
-	// 저절로 URL따라감
+	public String add() throws Exception {
+		return "board/add";
+	}
+
 	
 	// 내가한거
 //	@PostMapping("add")
