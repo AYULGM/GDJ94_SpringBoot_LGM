@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.winter.app.board.BoardDTO;
 import com.winter.app.board.notice.NoticeDTO;
@@ -63,7 +64,7 @@ public class QnaController {
 	
 	@PostMapping("add")
 	// writer title contents 받음. Board로 받아도되고 Qna로 받아도되고
-	public String add(QnaDTO qnaDTO) throws Exception{
+	public String add(QnaDTO qnaDTO, MultipartFile[] attach) throws Exception{
 		// 0으로 초기화하려면 이렇게 set해서 코드 3줄넣거나, QnaDTO.java에서 참조타입의 기본값이 null이니 원시타입(long)으로
 		// 바꿔주면 기본값이 0이니 Long -> long으로 바꾸거나 아니면 QnaDTO.java에서 getter로 넘겨줄때 조건문(0일때)를 건다.
 		// 총 3가지 방법(더있긴한데)중에 고르면 됨
@@ -71,7 +72,7 @@ public class QnaController {
 		qnaDTO.setBoardRef(0L);
 		qnaDTO.setBoardDepth(0L);
 		qnaDTO.setBoardStep(0L);
-		int result = qnaService.add(qnaDTO);
+		int result = qnaService.add(qnaDTO, attach);
 		BoardDTO boardDTO = qnaDTO;
 		return "redirect:./list";
 	}

@@ -11,8 +11,6 @@
 <!-- Front단 자원들은 전부다 static폴더에서 찾아라. 스프링부트 기본설정 -->
 <!-- 공통적으로하는게 웬만하면 절대경로로 하거라. -->
 <c:import url="/WEB-INF/views/template/head.jsp"></c:import>
-<!-- summernote페이지를 보는데 나머지 링크들(부트스트랩불러오는 링크같은거)은 이미 가지고있으니 없는 링크1개와 맨아래 스크립트 링크 1개 추가 -->
-    <link href="https://cdn.jsdelivr.net/npm/summernote@0.9.0/dist/summernote-bs4.min.css" rel="stylesheet">
 </head>
 <body id="page-top">
 	<div id="wrapper">
@@ -33,45 +31,39 @@
                 <div class="container-fluid">				
                     <!-- Page Heading -->
                     <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                        <h1 class="h3 mb-0 text-gray-800">${category} ${sub}</h1>
+                        <h1 class="h3 mb-0 text-gray-800">${category} Detail Page</h1>
                         <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
                         <i class="fas fa-download fa-sm text-white-50"></i> Generate Report</a>
                     </div>
                     <!-- Content Row -->
-                    <div class="row">
-                    
+                    <div>
                     <!-- 생성한 contents 작성(내용이 바뀌는부분) -->
-                    <!-- name은 DTO로 가니까 Setter의 이름과 동일하게 -->
-                    <!-- action은 액션태그 자체를 안써도됨(안쓰면 현재URL로이동하니까) -->
-                    <!-- (25.12.01) 파일의 용량이 크니 잘개 쪼개서 받는다. -->
-					<form method="post" enctype="multipart/form-data">
-					<!-- 개발자도구 열어보면 value값이 들어간게 보인다. -->
-					  <input type="hidden" name="boardNum" value="${dto.boardNum}">
-					  <div class="form-group">
-					    <label for="writer">작성자</label>
-					    <input type="text" class="form-control" value="${dto.boardWriter}" id="writer" name="boardWriter">
-					    <small id="emailHelp" class="form-text text-muted">name 또는 nickname을 입력하시면 됩니다.</small>
+					  <div>
+					  	<h4>작성자</h4>
+					    <h4 class="form-control">${dto.boardWriter}</h4>
 					  </div>
-					  <div class="form-group">
-					    <label for="title">글 제목</label>
-					    <input type="text" class="form-control" value="${dto.boardTitle}" id="title" name="boardTitle">
+					  <br>
+					  <div>
+					  	<h4>글 제목</h4>
+					    <h4 class="form-control"> ${dto.boardTitle}</h4>
 					  </div>
-					  <div class="form-group">
-					    <label for="contents">글 내용</label>
-					    <textarea class="form-control" id="contents" rows="3" name="boardContents">${dto.boardContents}</textarea>
+					  <br>
+					  <div>
+					    <h4>글 내용</h4>
+					    <div class="form-control" id="exampleInputContents1" rows="3" name="boardContents" readonly>${dto.boardContents}</div>
 					  </div>
-					  
-					  <div class="form-group">
-					  	<button type="button" id="fileAdd" class="form-control btn btn-primary">File Add</button>
-					  </div>
-					  
-					  <div id="files" class="form-group">
+					  <div class="card-footer">
+					  <!-- a태그는 get방식이므로 파라미터(클라이언트->서버에 보내는 데이터)를 보낼때 href URL에 담아서 보냄 -->
+					  	<c:if test="${category ne 'Notice'}">
+					  	<a href="./reply?boardNum=${dto.boardNum}" class="btn btn-danger">답글</a>
+					  	</c:if>
 					  	
+							<a href="./update?boardNum=${dto.boardNum}" class="btn btn-secondary">글 수정</a>
+							<form action="./delete" method="post">
+								<input type="hidden" name="boardNum" value="${dto.boardNum}">
+								<button id="del" class="btn btn-danger">Delete</button>
+							</form>
 					  </div>
-					  
-					  <button type="submit" class="btn btn-primary">Submit</button>
-					</form>
-                    
                     </div>
 				</div>
                 <!-- /.container-fluid -->
@@ -91,10 +83,5 @@
 	</div>
 
 <c:import url="/WEB-INF/views/template/foot.jsp"></c:import>
-<script src="https://cdn.jsdelivr.net/npm/summernote@0.9.0/dist/summernote-bs4.min.js"></script>
-<script type="text/javascript">
-	$("#contents").summernote();
-</script>
-<script src="/js/board/board.js"></script>
 </body>
 </html>

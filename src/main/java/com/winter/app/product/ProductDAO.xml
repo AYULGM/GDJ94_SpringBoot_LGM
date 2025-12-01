@@ -4,7 +4,7 @@
     "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
     <!-- namespace는 별칭안되서 풀패키지명 스킵못함 -->
     <!-- parameterType은 받는것이고 resultType은 주는것 -->
-    <mapper namespace="com.winter.app.board.notice.NoticeDAO">
+    <mapper namespace="com.winter.app.product.ProductDAO">
     	<!-- 반복되는 쿼리를 모아놓은 것 -->
     	<sql id="search">
     		<if test="kind == 'k1'">
@@ -23,43 +23,36 @@
     		</choose> -->
     	</sql>
     
-    	<select id="detail" resultType="NoticeDTO" parameterType="NoticeDTO">
-    		SELECT * FROM notice WHERE board_num=#{boardNum}
+    	<select id="detail" resultType="ProductDTO" parameterType="ProductDTO">
+    		SELECT * FROM products WHERE product_num=#{productNum}
     	</select>
     	
     	<!-- 새로 Pager타입의 parameterType을 추가한다. -->
     	<select id="count" resultType="Long" parameterType="Pager">
-    		SELECT COUNT(board_num) FROM notice
+    		SELECT COUNT(product_num) FROM products
 			<include refid="search"/>
     	</select>
     	
     	<!-- 옵션3개라 똑같은 쿼리를  3개를 써야하는 비효율성 board_title, board_writer, board_contents 비효율적이라 2번째 대안인 mybatis에 내장된 태그를 쓰는게 나음 -->
     	<!-- WHERE문에는 변수를 쓸 순없음, concat을 쓰는이유는 하나의 문자열로 합치기위함. -->
-    	<select id="list" resultType="NoticeDTO" parameterType="Pager">
+    	<select id="list" resultType="ProductDTO" parameterType="Pager">
     		SELECT * 
-    		FROM notice 
+    		FROM products
 			<include refid="search"/>
-    		ORDER BY board_num DESC
+    		ORDER BY product_num DESC
     		LIMIT #{startNum}, #{perPage}
     	</select>
     	
-    	<insert id="add" parameterType="NoticeDTO" useGeneratedKeys="true" keyProperty="boardNum">
-    		INSERT INTO notice (board_title,board_writer,board_contents,board_date,board_hit)
-    		VALUES(#{boardTitle},#{boardWriter},#{boardContents},now(),0)
+    	<insert id="add" parameterType="ProductDTO">
+    		INSERT INTO products (product_name,product_contents,product_category,product_rate,product_sale)
+    		VALUES(#{productName},#{productContents},#{productCategory},#{productRate},0)
     	</insert>
     	
-    	<delete id="delete" parameterType="NoticeDTO">
-    		DELETE FROM notice WHERE board_num=#{boardNum}
+    	<delete id="delete" parameterType="ProductDTO">
+    		DELETE FROM products WHERE product_num=#{productNum}
     	</delete>
     	
-    	<update id="update" parameterType="NoticeDTO">
-    		UPDATE notice SET board_title=#{boardTitle},board_contents=#{boardContents} WHERE board_num=#{boardNum}
+    	<update id="update" parameterType="ProductDTO">
+    		UPDATE products SET product_name=#{productName},product_contents=#{productContents},product_category=#{productCategory},product_rate=#{productRate},product_sale=#{productSale} WHERE board_num=#{boardNum}
     	</update>
-    	
-    	<!-- id는 fileAdd, files테이블에 데이터를 넣는 insert쿼리 만들기 -->
-    	<insert id="fileAdd" parameterType="NoticeFileDTO">
-    		INSERT INTO notice_files
-    		VALUES(null, #{fileName}, #{fileOrigin} ,#{boardNum})
-    	</insert>
-    	
     </mapper>

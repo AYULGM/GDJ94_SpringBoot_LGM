@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.winter.app.board.BoardDTO;
 import com.winter.app.util.Pager;
@@ -88,9 +89,10 @@ public class NoticeController {
 	
 	// 썜이한거
 	@PostMapping("add")
-	// BoardDTO로도 받아도된다. 어차피 넘어오는 값이 공통된 3개 Writer 어쩌구 어쩌구니까.
-	public String add(NoticeDTO noticeDTO) throws Exception {
-		int result = noticeService.add(noticeDTO);
+	// BoardDTO로도 받아도된다. 어차피 넘어오는 값이 공통된 3개 Writer,Title,Contents.
+	// (25.12.01) 5개까지 받으니 배열로선언
+	public String add(NoticeDTO noticeDTO, MultipartFile[] attach) throws Exception {
+		int result = noticeService.add(noticeDTO, attach);
 		
 		return "redirect:./list";
 	}

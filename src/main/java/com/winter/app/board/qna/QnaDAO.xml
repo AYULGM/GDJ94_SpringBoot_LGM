@@ -55,4 +55,9 @@
 	    <delete id="delete" parameterType="QnaDTO">
     		DELETE FROM qna WHERE board_num=#{boardNum}
     	</delete>
+    	
+    	<insert id="fileAdd" parameterType="QnaFileDTO">
+    		INSERT INTO qna_files
+    		VALUES(null, #{fileName}, #{fileOrigin}, #{boardNum})
+    	</insert>
     </mapper>

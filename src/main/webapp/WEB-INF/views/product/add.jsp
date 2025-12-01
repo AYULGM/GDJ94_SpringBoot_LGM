@@ -43,8 +43,7 @@
                     <!-- 생성한 contents 작성(내용이 바뀌는부분) -->
                     <!-- name은 DTO로 가니까 Setter의 이름과 동일하게 -->
                     <!-- action은 액션태그 자체를 안써도됨(안쓰면 현재URL로이동하니까) -->
-                    <!-- (25.12.01) 파일의 용량이 크니 잘개 쪼개서 받는다. -->
-					<form method="post" enctype="multipart/form-data">
+					<form method="post">
 					<!-- 개발자도구 열어보면 value값이 들어간게 보인다. -->
 					  <input type="hidden" name="boardNum" value="${dto.boardNum}">
 					  <div class="form-group">
@@ -60,15 +59,6 @@
 					    <label for="contents">글 내용</label>
 					    <textarea class="form-control" id="contents" rows="3" name="boardContents">${dto.boardContents}</textarea>
 					  </div>
-					  
-					  <div class="form-group">
-					  	<button type="button" id="fileAdd" class="form-control btn btn-primary">File Add</button>
-					  </div>
-					  
-					  <div id="files" class="form-group">
-					  	
-					  </div>
-					  
 					  <button type="submit" class="btn btn-primary">Submit</button>
 					</form>
                     
@@ -95,6 +85,5 @@
 <script type="text/javascript">
 	$("#contents").summernote();
 </script>
-<script src="/js/board/board.js"></script>
 </body>
 </html>
