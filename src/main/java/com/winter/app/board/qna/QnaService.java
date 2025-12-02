@@ -2,18 +2,16 @@ package com.winter.app.board.qna;
 
 import java.io.File;
 import java.util.List;
-import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import org.springframework.util.FileCopyUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.winter.app.board.BoardDTO;
 import com.winter.app.board.BoardFileDTO;
 import com.winter.app.board.BoardService;
-import com.winter.app.board.notice.NoticeFileDTO;
+import com.winter.app.files.FileManager;
 import com.winter.app.util.Pager;
 
 @Service
@@ -21,6 +19,9 @@ public class QnaService implements BoardService {
 
 	@Autowired
 	private QnaDAO qnaDAO;
+	
+	@Autowired
+	private FileManager fileManager;
 	
 	@Value("${app.upload.qna}")
 	private String uploadPath;
@@ -42,20 +43,18 @@ public class QnaService implements BoardService {
 		int result = qnaDAO.add(boardDTO);
 		qnaDAO.refUpdate(boardDTO);
 		
+    	if(attach == null) {
+    		return result;
+    	}
+		
+    	File file = new File(uploadPath);
 		for(MultipartFile f: attach) {
-			File file = new File(uploadPath);
-			if(!file.exists()) {
-				file.mkdirs();
-			}
+    		if(f == null || f.isEmpty()) { // 이 코드가 없으면 예외 발생 가능성
+    			continue;
+    		}
+    		String fileName = fileManager.fileSave(file, f);
 			
-			String fileName = UUID.randomUUID().toString();
-			fileName = fileName+"_"+f.getOriginalFilename();
-			
-			file = new File(file, fileName);
-			
-			FileCopyUtils.copy(f.getBytes(), file);
-			
-			BoardFileDTO boardFileDTO = new NoticeFileDTO();
+			BoardFileDTO boardFileDTO = new QnaFileDTO();
 			boardFileDTO.setFileName(fileName);
 			boardFileDTO.setFileOrigin(f.getOriginalFilename());
 			boardFileDTO.setBoardNum(boardDTO.getBoardNum());

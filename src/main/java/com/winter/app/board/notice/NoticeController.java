@@ -26,8 +26,9 @@ public class NoticeController {
 	@Autowired
 	private NoticeService noticeService;
 	
-	@Value("${category.board.notice}")
 	// spring에서 제공하는 value어노테이션을 사용(롬복말고)
+	// Value 어노테이션은 properties파일들을 저격해서 찾아감(이게 문법임, = 써서 ${}집어넣을생각 X)
+	@Value("${category.board.notice}")
 	private String category;
 	
 	@ModelAttribute("category") // 모든 메서드마다 Model을 집어넣는걸 대신해줌

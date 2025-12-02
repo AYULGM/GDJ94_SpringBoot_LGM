@@ -50,11 +50,23 @@
 					  <br>
 					  <div>
 					    <h4>글 내용</h4>
-					    <div class="form-control" id="exampleInputContents1" rows="3" name="boardContents" readonly>${dto.boardContents}</div>
+					    <div class="form-control" id="exampleInputContents1" rows="3" name="boardContents" readonly>
+					    ${dto.boardContents}
+					    </div>
+					    
+					    <div>
+					    	<h4>파일</h4>
+					    	<c:forEach items="${dto.fileDTOs}" var="file"> 
+					    		<div>
+					    			<a href="/files/${category}/${file.fileName}">${file.fileOrigin}</a>
+					    		</div>
+					    	</c:forEach>
+					    </div>
+					    
 					  </div>
 					  <div class="card-footer">
 					  <!-- a태그는 get방식이므로 파라미터(클라이언트->서버에 보내는 데이터)를 보낼때 href URL에 담아서 보냄 -->
-					  	<c:if test="${category ne 'Notice'}">
+					  	<c:if test="${category ne 'notice'}">
 					  	<a href="./reply?boardNum=${dto.boardNum}" class="btn btn-danger">답글</a>
 					  	</c:if>
 					  	

@@ -58,6 +58,7 @@
 					  </div>
 					  <div class="form-group">
 					    <label for="contents">글 내용</label>
+					    <!-- 줄바꿈(\n)을 그대로 출력하고 싶으면 <textarea>를 쓰던가, summernote() CDN을 불러오던가. -->
 					    <textarea class="form-control" id="contents" rows="3" name="boardContents">${dto.boardContents}</textarea>
 					  </div>
 					  
@@ -66,7 +67,7 @@
 					  </div>
 					  
 					  <div id="files" class="form-group">
-					  	
+					  	<!-- File Add 버튼을 누르면 여기에 JS로 인해 파일들이 올라감 -->
 					  </div>
 					  
 					  <button type="submit" class="btn btn-primary">Submit</button>
