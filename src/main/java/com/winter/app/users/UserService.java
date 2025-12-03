@@ -43,9 +43,19 @@ public class UserService {
 		
 		return result;
 	}
-	public UserDTO detail(String username)throws Exception{
-		UserDTO userDTO = userDAO.detail(username);
+	public UserDTO detail(UserDTO userDTO)throws Exception{ //mypage와 로그인 둘다 쓰임
+		UserDTO loginDTO = userDAO.detail(userDTO);
 		
-		return userDTO;
+		// 아이디를 조회해서 있으면 비번 비교해서 맞으면 로그인 아니면 null을 집어넣는다.
+		if(loginDTO != null) {
+			if(loginDTO.getPassword().equals(userDTO.getPassword())) {
+				return loginDTO;
+			}else {
+				loginDTO = null;
+			}
+		}
+		
+		return loginDTO;
 	}
+	
 }
