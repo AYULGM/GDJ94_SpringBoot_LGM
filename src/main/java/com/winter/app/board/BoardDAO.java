@@ -21,4 +21,6 @@ public interface BoardDAO {
 	public int fileAdd(BoardFileDTO boardFileDTO) throws Exception;
 	
 	public int fileDelete(BoardDTO boardDTO) throws Exception;
+	
+	public BoardFileDTO fileDetail(BoardFileDTO boardFileDTO) throws Exception;
 }

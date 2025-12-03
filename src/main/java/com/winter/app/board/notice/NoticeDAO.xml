@@ -94,4 +94,11 @@
 			FROM notice_files
 			WHERE board_num = #{boardNum};
     	</delete>
+    	
+    	<!-- file detail -->
+    	<select id="fileDetail" parameterType="BoardFileDTO" resultType="BoardFileDTO">
+    		SELECT *
+    		FROM notice_files
+    		WHERE file_num=#{fileNum}
+    	</select>
     </mapper>

@@ -81,8 +81,22 @@
     	</delete>
     	
     	<!-- BoardFileDTO가 아니라 QnaFileDTO도 된다. -->
-    	<insert id="fileAdd" parameterType="BoardFileDTO">
+    	<insert id="fileAdd" parameterType="QnaFileDTO">
     		INSERT INTO qna_files
     		VALUES(null, #{fileName}, #{fileOrigin}, #{boardNum})
     	</insert>
+    	
+    	    	<!-- file delete -->
+    	<delete id="fileDelete" parameterType="QnaDTO">
+   			DELETE
+			FROM qna_files
+			WHERE board_num = #{boardNum};
+    	</delete>
+    	
+    	<!-- file detail -->
+    	<select id="fileDetail" parameterType="QnaFileDTO" resultType="QnaFileDTO">
+    		SELECT *
+    		FROM qna_files
+    		WHERE file_num=#{fileNum}
+    	</select>
     </mapper>

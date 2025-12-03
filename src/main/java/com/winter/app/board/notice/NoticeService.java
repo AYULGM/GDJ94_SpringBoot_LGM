@@ -90,6 +90,12 @@ public class NoticeService implements BoardService{
 	public int update(BoardDTO boardDTO) throws Exception {
 		return noticeDAO.update(boardDTO);
 	}
+    
+    @Override
+    public BoardFileDTO fileDetail(BoardFileDTO boardFileDTO) throws Exception {
+    	
+    	return noticeDAO.fileDetail(boardFileDTO);
+    }
 	
 	
 }

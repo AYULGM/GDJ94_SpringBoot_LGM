@@ -58,8 +58,9 @@
 					    	<h4>파일</h4>
 					    	<c:forEach items="${dto.fileDTOs}" var="file"> 
 					    		<div>
-					    			<a href="/files/${category}/${file.fileName}">${file.fileOrigin}</a>
-					    		</div>
+							   <%-- <a href="/files/${category}/${file.fileName}">${file.fileOrigin}</a> --%>					    		
+									<a href="./fileDown?fileNum=${file.fileNum}">${file.fileOrigin}</a>
+								</div>
 					    	</c:forEach>
 					    </div>
 					    

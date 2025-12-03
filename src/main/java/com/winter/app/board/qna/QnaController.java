@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.winter.app.board.BoardDTO;
+import com.winter.app.board.BoardFileDTO;
 import com.winter.app.board.notice.NoticeDTO;
 import com.winter.app.util.Pager;
 
@@ -131,5 +132,10 @@ public class QnaController {
 		int result = qnaService.delete(qnaDTO);
 		
 		return "redirect:./list";
+	}
+	
+	@GetMapping("fileDown")
+	public void fileDown(BoardFileDTO boardFileDTO) throws Exception {
+		boardFileDTO = qnaService.fileDetail(boardFileDTO);
 	}
 }
