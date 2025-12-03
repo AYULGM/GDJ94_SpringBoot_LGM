@@ -1,11 +1,13 @@
 package com.winter.app.board.notice;
 
 import java.io.File;
+import java.sql.SQLException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.winter.app.board.BoardDTO;
@@ -15,6 +17,7 @@ import com.winter.app.files.FileManager;
 import com.winter.app.util.Pager;
 
 @Service
+@Transactional(rollbackFor = Exception.class) // 클래스 전체에 트랜잭션 적용, BoardService에 트랜잭션 적용해도 되지만 잘 안된다고 하심(추가,삭제,수정에는 트랜잭션이 필요(커밋,롤백))
 public class NoticeService implements BoardService{
 
 	@Autowired
@@ -39,10 +42,17 @@ public class NoticeService implements BoardService{
 	public BoardDTO detail(BoardDTO boardDTO) throws Exception {
 		return noticeDAO.detail(boardDTO);
 	}
+    
     @Override
+    // @Transactional // 오늘배운 AOP를 어노테이션 하나로 딸깍
 	public int add(BoardDTO boardDTO, MultipartFile[] attach) throws Exception {
     	// 글번호가 필요
     	int result = noticeDAO.add(boardDTO);
+    	
+//    	강제로 롤백하는 코드
+//    	if(result>0) {
+//    		throw new SQLException();
+//    	}
     	
     	if(attach == null) {
     		return result;

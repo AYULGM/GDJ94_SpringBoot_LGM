@@ -1,16 +1,15 @@
 package com.winter.app.board.notice;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-import java.util.List;
-
-import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-
-import com.winter.app.util.Pager;
+import org.springframework.test.annotation.Rollback;
+import org.springframework.transaction.annotation.Transactional;
 
 @SpringBootTest
+@Transactional //이것만 주면 무조건 롤백
 class NoticeDAOTest {
 
 	@Autowired
@@ -34,6 +33,7 @@ class NoticeDAOTest {
 	}
 	
 	// @Test
+	@Rollback(false) //얘만 롤백 안하겠다.
 	void testAdd() throws Exception{
 		NoticeDTO noticeDTO = new NoticeDTO();
 		noticeDTO.setBoardTitle("안녕 테스트야");
