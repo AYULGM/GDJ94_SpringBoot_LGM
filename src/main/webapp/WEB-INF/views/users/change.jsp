@@ -48,57 +48,26 @@
                                    <form:form modelAttribute="userDTO" method="post" enctype="multipart/form-data">
                                    <%-- <form method="post" enctype="multipart/form-data"> --%>
                                    	  
+                                   	  <!-- 패스워드 변경을 위한 페이지. -->
 									  <div class="form-group">
-									    <label for="writer">Username</label>
-									    <form:input path="username" cssClass="form-control" id="username"/>
-									    <form:errors path="username"></form:errors>
-									    <%-- <input type="text" class="form-control"  id="username" name="username"> --%>
-									  </div>
+									    <label for="password">기존 Password</label>
+									    <!-- 여긴 Spring form:input으로 안쓴 이유가 따로따로 살리려고하는거임, 이렇게 안쓰려면 DB에 따로 기존PW를 모아두는 컬럼을 만들어야함 -->
+									    <input type="password" class="form-control" name="exist">
+									  </div>									  
+                                   	  
 									  <div class="form-group">
-									    <label for="password">Password</label>
+									    <label for="password">새로운 Password</label>
 									    <form:input path="password" cssClass="form-control" id="password"/>
 									    <form:errors path="password"></form:errors>
 									    <!-- <input type="password" class="form-control"  id="password" name="password"> -->
 									  </div>									  
 									  <div class="form-group">
-									    <label for="passwordcheck">PasswordCheck</label>
+									    <label for="passwordcheck">새로운 PasswordCheck</label>
 									    <form:input path="passwordCheck" cssClass="form-control" id="passwordCheck"/>
 									    <form:errors path="passwordCheck"></form:errors>
 									    <!-- <input type="password" class="form-control"  id="password" name="password"> -->
 									  </div>									  
-									  <div class="form-group">
-									    <label for="name">Name</label>
-									    <form:input path="name" cssClass="form-control" id="name"/>
-									    <form:errors path="name"></form:errors>
-									    <!-- <input type="text" class="form-control" name="name" id="name"> -->
-									  </div>
-									  <div class="form-group">
-									    <label for="email">Email</label>
-									    <form:input path="email" type="email" cssClass="form-control" id="email"/>
-									    <form:errors path="email"></form:errors>
-									    <!-- <input type="email" class="form-control" name="email" id="email"> -->
-									  </div>									  
-									  <div class="form-group">
-									    <label for="phone">Phone</label>
-									    <form:input path="phone" cssClass="form-control" id="phone"/>
-									    <form:errors path="phone"></form:errors>
-									    <!-- <input type="text" class="form-control" name="phone" id="phone"> -->
-									  </div>									  
-									  <div class="form-group">
-									    <label for="birth">Birth</label>
-									    <form:input path="birth"  type="date" cssClass="form-control" id="birth"/>
-									    <form:errors path="birth"></form:errors>
-									    <!-- <input type="date" class="form-control" name="birth" id="birth"> -->
-									  </div>									  
-									  <div class="form-group">
-									  	<button type="button" id="fileAdd"  class="form-control btn btn-primary" >File Add</button>
-									  	
-									  </div>
 									  
-									  <div id="files" class="form-group">
-									  
-									  </div>
-									
 									  <button type="submit" class="btn btn-primary">Submit</button>
 									  </form:form>
 									<%-- </form> --%>

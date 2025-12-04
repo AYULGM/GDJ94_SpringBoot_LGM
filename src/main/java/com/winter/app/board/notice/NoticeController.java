@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,6 +17,7 @@ import com.winter.app.board.BoardDTO;
 import com.winter.app.board.BoardFileDTO;
 import com.winter.app.util.Pager;
 
+import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 
 
@@ -73,7 +75,8 @@ public class NoticeController {
 	
 	// 쌤이한거
 	@GetMapping("add")
-	public String add() throws Exception {
+	// @ModelAttribute는 숨어있다고 했음.(생략이 가능)
+	public String add(@ModelAttribute("dto") NoticeDTO noticeDTO) throws Exception {
 		return "board/add";
 	}
 
@@ -93,7 +96,15 @@ public class NoticeController {
 	@PostMapping("add")
 	// BoardDTO로도 받아도된다. 어차피 넘어오는 값이 공통된 3개 Writer,Title,Contents.
 	// (25.12.01) 5개까지 받으니 배열로선언
-	public String add(NoticeDTO noticeDTO, MultipartFile[] attach) throws Exception {
+	// (25.12.04) @Valid는 컨트롤러로 보낼때 중간에서 검증을 하고 보냄 (검증해서 실패했으면 처리는 우리가 알아서)
+	// @Valid 무조건 바로 뒤에 BindingResult(검증결과를 받는 애)붙임
+	public String add(@ModelAttribute("dto") @Valid NoticeDTO noticeDTO,BindingResult bindingResult, MultipartFile[] attach) throws Exception {
+		
+		// 검증은 이렇게 체크한다. True면 에러가 있는거임
+		if(bindingResult.hasErrors()) {
+			return "board/add";
+		}
+		
 		int result = noticeService.add(noticeDTO, attach);
 		
 		return "redirect:./list";

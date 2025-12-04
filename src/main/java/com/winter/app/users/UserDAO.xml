@@ -35,7 +35,24 @@
     			<result column="file_origin" property="fileOrigin"/>
     		</association>
     	</resultMap>
-
+<!-- 어차피 결과는 int가 나오기때문에 태그명은 상관없음, 개발자가 명시 -->
+		<update id="update" parameterType="UserDTO" >
+			UPDATE users
+			<set>
+				<!-- name은 @NotBlank가 있어서 if안해도됨 -->
+				name=#{name},
+				<if test="email != null">
+				email=#{email},
+				</if>
+				<if test="phone != null">
+				phone=#{phone},
+				</if>
+				<if test="birth != null">
+				birth=#{birth}
+				</if>
+			</set>
+			WHERE username=#{username}
+		</update>
     	
 
     

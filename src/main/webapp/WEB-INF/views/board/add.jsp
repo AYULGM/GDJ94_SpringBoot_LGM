@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -44,22 +45,37 @@
                     <!-- name은 DTO로 가니까 Setter의 이름과 동일하게 -->
                     <!-- action은 액션태그 자체를 안써도됨(안쓰면 현재URL로이동하니까) -->
                     <!-- (25.12.01) 파일의 용량이 크니 잘개 쪼개서 받는다. -->
-					<form method="post" enctype="multipart/form-data">
+                    
+             <!------------------------ Form --------------------- -->
+             
+             <!-- modelAttribute엔 겟맵핑에서 보낸 모델 어트리뷰트 (첫글자가 소문자인 클래스명)-->
+             <form:form modelAttribute="dto" method="post" enctype="multipart/form-data">
+        <%-- <form method="post" enctype="multipart/form-data"> --%>
+             <!-- path엔 받아온 DTO의 setter,getter의 이름을 써라. -->
+             	<form:hidden path="boardNum"/>
+           <%-- <input type="hidden" name="boardNum" value="${dto.boardNum}"> --%>
 					<!-- 개발자도구 열어보면 value값이 들어간게 보인다. -->
-					  <input type="hidden" name="boardNum" value="${dto.boardNum}">
 					  <div class="form-group">
+					  <!-- 이건 굳이 쓸일없어서 주석처리 -->
+					  <%-- <form:label path="boardWriter"></form:label> --%>
 					    <label for="writer">작성자</label>
-					    <input type="text" class="form-control" value="${dto.boardWriter}" id="writer" name="boardWriter">
-					    <small id="emailHelp" class="form-text text-muted">name 또는 nickname을 입력하시면 됩니다.</small>
+					    <!-- path가 name이 되서 쓸 필요없음 -->
+					    <form:input path="boardWriter" cssClass="form-control" id="writer"/>
+				<%-- 	<input type="text" class="form-control" value="${dto.boardWriter}" id="writer" name="boardWriter"> --%>					    <small id="emailHelp" class="form-text text-muted">name 또는 nickname을 입력하시면 됩니다.</small>
 					  </div>
 					  <div class="form-group">
 					    <label for="title">글 제목</label>
-					    <input type="text" class="form-control" value="${dto.boardTitle}" id="title" name="boardTitle">
+					    <!-- path가 name이 된다. -->
+					    <form:input path="boardTitle" cssClass="form-control" id="title"/>
+				   <%-- <input type="text" class="form-control" value="${dto.boardTitle}" id="title" name="boardTitle"> --%>
+				   		<form:errors path="boardTitle"></form:errors>
+				   		<!-- 아무것도 설정안하면 기본 메시지가 뜸 -->
 					  </div>
 					  <div class="form-group">
 					    <label for="contents">글 내용</label>
 					    <!-- 줄바꿈(\n)을 그대로 출력하고 싶으면 <textarea>를 쓰던가, summernote() CDN을 불러오던가. -->
-					    <textarea class="form-control" id="contents" rows="3" name="boardContents">${dto.boardContents}</textarea>
+					    <form:textarea path="boardContents" cssClass="form-control" rows="8" id="contents"/>
+				   <%-- <textarea class="form-control" id="contents" rows="3" name="boardContents">${dto.boardContents}</textarea> --%>
 					  </div>
 					  
 					  <div class="form-group">
@@ -71,7 +87,7 @@
 					  </div>
 					  
 					  <button type="submit" class="btn btn-primary">Submit</button>
-					</form>
+					</form:form>
                     
                     </div>
 				</div>

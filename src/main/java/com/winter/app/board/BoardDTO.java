@@ -3,8 +3,8 @@ package com.winter.app.board;
 import java.time.LocalDate;
 import java.util.List;
 
-import com.winter.app.board.notice.NoticeFileDTO;
-
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -16,6 +16,8 @@ import lombok.ToString;
 public class BoardDTO {
 
 	private Long boardNum;
+	@NotBlank(message = "필수에요 제발 적어주세요")
+	/* @Size(min = 1) 어차피 NotBlank에 포함되어있음 */
 	private String boardTitle;
 	private String boardWriter;
 	private String boardContents;

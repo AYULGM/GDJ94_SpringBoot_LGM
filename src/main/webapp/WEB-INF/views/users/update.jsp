@@ -49,24 +49,6 @@
                                    <%-- <form method="post" enctype="multipart/form-data"> --%>
                                    	  
 									  <div class="form-group">
-									    <label for="writer">Username</label>
-									    <form:input path="username" cssClass="form-control" id="username"/>
-									    <form:errors path="username"></form:errors>
-									    <%-- <input type="text" class="form-control"  id="username" name="username"> --%>
-									  </div>
-									  <div class="form-group">
-									    <label for="password">Password</label>
-									    <form:input path="password" cssClass="form-control" id="password"/>
-									    <form:errors path="password"></form:errors>
-									    <!-- <input type="password" class="form-control"  id="password" name="password"> -->
-									  </div>									  
-									  <div class="form-group">
-									    <label for="passwordcheck">PasswordCheck</label>
-									    <form:input path="passwordCheck" cssClass="form-control" id="passwordCheck"/>
-									    <form:errors path="passwordCheck"></form:errors>
-									    <!-- <input type="password" class="form-control"  id="password" name="password"> -->
-									  </div>									  
-									  <div class="form-group">
 									    <label for="name">Name</label>
 									    <form:input path="name" cssClass="form-control" id="name"/>
 									    <form:errors path="name"></form:errors>
@@ -90,14 +72,6 @@
 									    <form:errors path="birth"></form:errors>
 									    <!-- <input type="date" class="form-control" name="birth" id="birth"> -->
 									  </div>									  
-									  <div class="form-group">
-									  	<button type="button" id="fileAdd"  class="form-control btn btn-primary" >File Add</button>
-									  	
-									  </div>
-									  
-									  <div id="files" class="form-group">
-									  
-									  </div>
 									
 									  <button type="submit" class="btn btn-primary">Submit</button>
 									  </form:form>

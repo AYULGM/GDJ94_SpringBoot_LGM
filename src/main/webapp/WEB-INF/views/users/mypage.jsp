@@ -49,7 +49,8 @@
                                 
                                 <div class="card-footer">
                                 	
-                                	<a href="./update?boardNum=${dto.boardNum}" class="btn btn-primary">Update</a>
+                                	<a href="./update" class="btn btn-primary">Update</a>
+                                	<a href="./change" class="btn btn-danger">비밀번호 변경</a>
                                 	<form action="./delete" method="post">
                                 		<input type="hidden" name="boardNum" value="${dto.boardNum}">
                                 		<button id="del" class="btn btn-danger">Delete</button>
