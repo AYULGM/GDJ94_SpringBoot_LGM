@@ -101,11 +101,13 @@ public class UserController {
 		return "redirect:/";
 	}
 	
+	// 비밀번호 검증을 위한 페이지
 	@GetMapping("change")
 	public void change(UserDTO userDTO) throws Exception {
 		
 	}
 	
+	// 비밀번호 검증을 위한 페이지
 	@PostMapping("change")
 	public String change(@Validated(PasswordGroup.class) UserDTO userDTO,BindingResult bindingResult , String exist) throws Exception {
 		
