@@ -47,11 +47,13 @@
                                    	  
 									  <div class="form-group">
 									    <label for="username">Username</label>
-									    <input type="text" class="form-control"  id="username" name="username">
+									    <!-- 귀찮으니까 테스트용도로 밸류값 미리 넣어놈 -->
+									    <input type="text" class="form-control" value="id456" id="username" name="username">
 									  </div>
 									  <div class="form-group">
 									    <label for="password">Password</label>
-									    <input type="password" class="form-control"  id="password" name="password">
+									    <!-- 귀찮으니까 테스트용도로 밸류값 미리 넣어놈 -->
+									    <input type="password" class="form-control" value="pw123" id="password" name="password">
 									  </div>									  
 									
 									  <button type="submit" class="btn btn-primary">Submit</button>

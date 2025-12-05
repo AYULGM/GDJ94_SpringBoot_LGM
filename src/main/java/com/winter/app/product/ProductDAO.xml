@@ -50,6 +50,13 @@
 			    ORDER BY board_num DESC
 			    Limit #{pager.startNum}, #{pager.perPage}
 	 	</select>
+	 	
+	 	<select id="commentCount" parameterType="ProductCommentDTO" resultType="Long">
+	 		SELECT COUNT(board_num)
+	 		FROM comment
+	 		WHERE product_num=#{productNum}
+	 	</select>
+	 	
     	<insert id="commentAdd" parameterType="ProductCommentDTO">
     		INSERT INTO comment (board_num, board_contents, board_date, product_num, username)
     		VALUES (null, #{boardContents}, now(), #{productNum}, #{username})

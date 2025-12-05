@@ -95,6 +95,10 @@
         </div>
 	</div>
 
+
+
+
+
 <c:import url="/WEB-INF/views/template/foot.jsp"></c:import>
 </body>
 </html>

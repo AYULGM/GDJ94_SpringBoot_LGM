@@ -1,46 +1,57 @@
-/**
- * 
- */
 console.log("hi hello");
 
 const list = document.getElementById("list");
+const commentAdd = document.getElementById("commentAdd");
+const contents = document.getElementById("contents");
+const close = document.getElementById("close");
+const pagelink = document.getElementsByClassName("page-link"); //유사배열이라 foreach안됨
+
 let num = list.getAttribute("data-product-num");
 
 
-/*외부로 접속한게 아니기때문에 http://localhost/product/detail?productNum=1 이렇게 안해도됨*/
-fetch(`./commentList?productNum=${num}`) /* ./은 product 폴더임*/
-	.then(r => r.json())
+commentList(1); // 읽는순서가중요함 and (1L)이라고 안적는이유가 JS에서는 롱타입이 없어서그럼
+
+list.addEventListener("click", (e) => {
+	let t = e.target;
+	if(t.classList.contains("page-link")) {
+		let p = t.getAttribute("data-pager-num");
+		commentList(p);
+	}
+})
+
+commentAdd.addEventListener("click", () => {
+	const param = new URLSearchParams();
+	param.append("productNum", num);
+	param.append("boardContents", contents.value);
+	
+	
+	fetch("commentAdd", {
+		method:"POST",
+		body:param
+	})
+	.then(r=>r.json())
+	.then(r=> {
+		if(r=='1') { /*성공한다면 '1'말고 1로 해도됨*/
+			commentList(1);
+		}
+	})
+	.catch(e => console.log(e))
+	.finally(() => {
+		close.click();
+		contents.value="";
+	})
+})
+
+
+
+
+function commentList(page) {
+	fetch(`./commentList?productNum=${num}&page=${page}`)
+	.then(r => r.text())
 	.then(r => {
-		// 내방법
-		list.innerHTML = "";
-		r.forEach(item => {
-			list.innerHTML += `
-			  <tr>
-			    <td>${item.username}</td>
-			    <td>${item.boardContents}</td>
-			    <td>${item.boardDate}</td>
-			  </tr>
-			`;
-		});
-		// 썜의 방법
-		r.forEach(dto => {
-			let tr = document.createElement("tr")
-			let td = document.createElement("td")
-			td.innerText=dto.username;
-			tr.append(td);
-			td = document.createElement("td");
-			td.innerText=dto.boardContents;
-			tr.append(td)
-			td = document.createElement("td");
-			td.innerText=dto.boardDate;
-			tr.append(td);
-			list.append(tr);
-		})
+		list.innerHTML=r;
 		
 		})
 	.catch(e => console.log(e))
-;
-// 텍스트로 넣는방법
-// result.innerText = v;
-// 태그로 넣는방법
-// result.innerHTML="<h3>" + v + "</h3>"
+	;
+}

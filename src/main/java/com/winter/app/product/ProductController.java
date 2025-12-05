@@ -10,7 +10,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.winter.app.users.UserDTO;
 import com.winter.app.util.Pager;
+
+import jakarta.servlet.http.HttpSession;
 
 @Controller
 @RequestMapping("/product/*")
@@ -94,15 +97,20 @@ public class ProductController {
 	
 	// ------------------------------------------------------------------------
 	@GetMapping("commentList")
-	@ResponseBody //리턴하는애를 JSP를 거치치않고(즉,Internal Resource ViewResolver를 거치지않음) JSON으로 바꿔서 바로 응답으로
-	public List<ProductCommentDTO> commentList(ProductCommentDTO productCommentDTO, Pager pager) throws Exception{
+	public void commentList(ProductCommentDTO productCommentDTO, Pager pager, Model model) throws Exception{
 		List<ProductCommentDTO> list = productService.commentList(productCommentDTO, pager);
+		model.addAttribute("list", list);
 		
-		return list;
 	}
 	
 	@PostMapping("commentAdd")
-	public void commentAdd(ProductCommentDTO productCommentDTO) throws Exception{
+	@ResponseBody //json으로 바꿔서 리턴되게(jsp(내부자원리소스까지)를 안거침)
+	public int commentAdd(ProductCommentDTO productCommentDTO, HttpSession session) throws Exception{
+		UserDTO userDTO = (UserDTO)session.getAttribute("user");
+		productCommentDTO.setUsername(userDTO.getUsername());
 		
+		int result = productService.commentAdd(productCommentDTO);
+		
+		return result; // 원시타입은 키 없이 값만 전달됨
 	}
 }
