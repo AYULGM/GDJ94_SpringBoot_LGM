@@ -42,7 +42,17 @@
     		
     	</update>
     	
-    	
-    	
+	 	<!--     댓글 리스트      -->    	
+	 	<select id="commentList" resultType="ProductCommentDTO" parameterType="java.util.Map">
+	 		    SELECT *
+			    FROM comment
+			    WHERE product_num=#{product.productNum}
+			    ORDER BY board_num DESC
+			    Limit #{pager.startNum}, #{pager.perPage}
+	 	</select>
+    	<insert id="commentAdd" parameterType="ProductCommentDTO">
+    		INSERT INTO comment (board_num, board_contents, board_date, product_num, username)
+    		VALUES (null, #{boardContents}, now(), #{productNum}, #{username})
+    	</insert>
     	
     </mapper>

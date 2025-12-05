@@ -8,6 +8,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.winter.app.util.Pager;
 
 @Controller
 @RequestMapping("/product/*")
@@ -88,4 +91,18 @@ public class ProductController {
 		return "commons/result";
 	}
 	
+	
+	// ------------------------------------------------------------------------
+	@GetMapping("commentList")
+	@ResponseBody //리턴하는애를 JSP를 거치치않고(즉,Internal Resource ViewResolver를 거치지않음) JSON으로 바꿔서 바로 응답으로
+	public List<ProductCommentDTO> commentList(ProductCommentDTO productCommentDTO, Pager pager) throws Exception{
+		List<ProductCommentDTO> list = productService.commentList(productCommentDTO, pager);
+		
+		return list;
+	}
+	
+	@PostMapping("commentAdd")
+	public void commentAdd(ProductCommentDTO productCommentDTO) throws Exception{
+		
+	}
 }

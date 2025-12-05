@@ -1,9 +1,13 @@
 package com.winter.app.product;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import com.winter.app.util.Pager;
 
 @Service
 public class ProductService {
@@ -38,7 +42,22 @@ public class ProductService {
 		return productDAO.update(productDTO);
 	}
 	
+	// 댓글 리스트
+	public List<ProductCommentDTO> commentList(ProductCommentDTO productCommentDTO, Pager pager) throws Exception{
+		Map<String, Object> map = new HashMap<>();
+		map.put("product", productCommentDTO);
+		map.put("pager", pager);
+		
+		pager.pageing(20L);
+		
+		return productDAO.commentList(map);
+	}
 	
+	// 댓글 등록
+	public int commentAdd(ProductCommentDTO productCommentDTO) throws Exception{
+		// 일단 나중에 코드를 짬
+		return productDAO.commentAdd(productCommentDTO);
+	}
 	
 	
 }

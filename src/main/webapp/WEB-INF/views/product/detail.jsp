@@ -75,6 +75,14 @@
 					
 					        <hr>
 					
+							<div>
+								<table>
+									<tbody id="list" data-product-num="${dto.productNum}">
+																	
+									</tbody>
+								</table>
+							</div>
+							
 					        <!-- 버튼 영역 -->
 					        <div class="d-flex justify-content-between mt-3">
 					
@@ -125,7 +133,7 @@
 	
 
 	<c:import url="/WEB-INF/views/template/foot.jsp"/>
-	
+	<script type="text/javascript" src="/js/product/product_comment.js"></script>
 	
 	
 	

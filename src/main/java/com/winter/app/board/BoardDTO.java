@@ -13,15 +13,12 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class BoardDTO {
+public class BoardDTO extends CommentDTO {
 
-	private Long boardNum;
 	@NotBlank(message = "필수에요 제발 적어주세요")
 	/* @Size(min = 1) 어차피 NotBlank에 포함되어있음 */
 	private String boardTitle;
 	private String boardWriter;
-	private String boardContents;
-	private LocalDate boardDate;
 	private Long boardHit;
 	
 	// has a(가지고있다)관계
