@@ -2,57 +2,47 @@
 <!DOCTYPE mapper
     PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
-    <!-- namespace는 별칭안되서 풀패키지명 스킵못함 -->
-    <!-- parameterType은 받는것이고 resultType은 주는것 -->
-    <mapper namespace="com.winter.app.product.ProductDAO">
-    	<!-- 반복되는 쿼리를 모아놓은 것 -->
-    	<sql id="search">
-    		<if test="kind == 'k1'">
-    			WHERE board_title LIKE concat('%',#{search},'%')
-    		</if>
-    		<if test="kind == 'k2'">
-    			WHERE board_contents LIKE concat('%',#{search},'%')
-    		</if>
-    		<if test="kind == 'k3'">
-    			WHERE board_writer LIKE concat('%',#{search},'%')
-    		</if>
-    		<!--  이렇게할수도있다.<choose>
-    			<when test=""></when>
-    			<when test=""></when>
-    			<otherwise></otherwise>
-    		</choose> -->
-    	</sql>
     
-    	<select id="detail" resultType="ProductDTO" parameterType="ProductDTO">
+    <mapper namespace="com.winter.app.product.ProductDAO">
+    	
+    	<!-- 리스트 보기 -->
+    	<select id="list" parameterType="ProductDTO" resultType="ProductDTO">
+    		SELECT * FROM products
+    	</select>
+    	
+    	<!-- 조회 -->
+    	<select id="detail" parameterType="ProductDTO" resultType="ProductDTO">
     		SELECT * FROM products WHERE product_num=#{productNum}
     	</select>
     	
-    	<!-- 새로 Pager타입의 parameterType을 추가한다. -->
-    	<select id="count" resultType="Long" parameterType="Pager">
-    		SELECT COUNT(product_num) FROM products
-			<include refid="search"/>
-    	</select>
-    	
-    	<!-- 옵션3개라 똑같은 쿼리를  3개를 써야하는 비효율성 board_title, board_writer, board_contents 비효율적이라 2번째 대안인 mybatis에 내장된 태그를 쓰는게 나음 -->
-    	<!-- WHERE문에는 변수를 쓸 순없음, concat을 쓰는이유는 하나의 문자열로 합치기위함. -->
-    	<select id="list" resultType="ProductDTO" parameterType="Pager">
-    		SELECT * 
-    		FROM products
-			<include refid="search"/>
-    		ORDER BY product_num DESC
-    		LIMIT #{startNum}, #{perPage}
-    	</select>
-    	
-    	<insert id="add" parameterType="ProductDTO">
-    		INSERT INTO products (product_name,product_contents,product_category,product_rate,product_sale)
-    		VALUES(#{productName},#{productContents},#{productCategory},#{productRate},0)
+    	<!-- 추가 -->
+    	<insert id="add" parameterType="productDTO">
+    		INSERT INTO products 
+			(product_name, product_contents, product_category, product_rate, product_sale)
+			VALUES
+			(#{productName} , #{productContents} , #{productCategory} , #{productRate} , #{productSale})
     	</insert>
     	
+    	<!-- 삭제 -->
     	<delete id="delete" parameterType="ProductDTO">
-    		DELETE FROM products WHERE product_num=#{productNum}
+    		DELETE FROM products
+    		WHERE product_num = #{productNum}
     	</delete>
     	
+    	
+    	<!-- 수정 -->
     	<update id="update" parameterType="ProductDTO">
-    		UPDATE products SET product_name=#{productName},product_contents=#{productContents},product_category=#{productCategory},product_rate=#{productRate},product_sale=#{productSale} WHERE board_num=#{boardNum}
+    		UPDATE products SET 
+	    		product_name = #{productName},
+	    		product_category = #{productCategory},
+	    		product_rate = #{productRate},
+	    		product_contents = #{productContents},
+	    		product_sale = #{productSale}
+    		WHERE product_num = #{productNum}
+    		
     	</update>
+    	
+    	
+    	
+    	
     </mapper>
