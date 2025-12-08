@@ -10,16 +10,27 @@
 		
 		<insert id="userFileAdd" parameterType="UserFileDTO">
 			INSERT INTO profile (file_name, file_origin, username)
-			VALUES(#{fileName}, #{fileOrigin}, #{username})
+			(#{fileName}, #{fileOrigin}, #{username})
+		</insert>
+		
+		<insert id="roleAdd" parameterType="UserDTO">
+			INSERT INTO user_role (username, role_num)
+			values (#{username}, 3)
 		</insert>
     	
     	<select id="detail" resultMap="detailResult" parameterType="UserDTO">
-    		SELECT *
+			SELECT * 
 			FROM users U
 				 LEFT JOIN
-			     profile PF
+			     profile P
 			     USING(username)
-			WHERE U.username=#{username}
+			     LEFT JOIN
+			     user_role UR
+			     USING(username)
+			     LEFT JOIN 
+			     role R
+			     USING(role_num)
+			WHERE username=#{username}
     	</select>
     	
     	<resultMap type="UserDTO" id="detailResult">
@@ -34,12 +45,15 @@
     			<result column="file_name" property="fileName"/>
     			<result column="file_origin" property="fileOrigin"/>
     		</association>
+    		<collection property="roleDTOs" javaType="java.util.List" ofType="RoleDTO">
+    			<id column="role_num" property="roleNum"/>
+    			<result column="role_name" property="roleName"/>
+    		</collection>
     	</resultMap>
-<!-- 어차피 결과는 int가 나오기때문에 태그명은 상관없음, 개발자가 명시 -->
-		<update id="update" parameterType="UserDTO" >
+
+		<update id="update" parameterType="UserDTO">
 			UPDATE users
 			<set>
-				<!-- name은 @NotBlank가 있어서 if안해도됨 -->
 				name=#{name},
 				<if test="email != null">
 				email=#{email},
@@ -49,7 +63,7 @@
 				</if>
 				<if test="birth != null">
 				birth=#{birth}
-				</if>
+				</if>			
 			</set>
 			WHERE username=#{username}
 		</update>

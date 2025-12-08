@@ -1,6 +1,18 @@
 package com.winter.app.users;
 
 import java.time.LocalDate;
+import java.util.Collection;
+
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -12,33 +24,64 @@ import lombok.ToString;
 @Setter
 @Getter
 @ToString
-public class UserDTO {
-	// 어노테이션이 있는건 다 검사함
+public class UserDTO implements UserDetails{
 	
 	@NotBlank(groups = {RegisterGroup.class})
 	private String username;
-	@Pattern(
-		    regexp = "^(?=.*[A-Za-z])(?=.*\\d)(?=.*[!@#$%^&*()_+\\-={}\\[\\]|:;\"'<>,.?/~`]).{8,20}$",
-		    message = "비밀번호는 영문, 숫자, 특수문자를 모두 포함하여 8~20자로 입력해야 합니다.",
-    		groups = {RegisterGroup.class, PasswordGroup.class}
-		)
+	//@Pattern(regexp = "^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-])[A-Za-z0-9#?!@$%^&*-]{8,12}$")
+	
 	@NotBlank(groups = {RegisterGroup.class, PasswordGroup.class})
 	private String password;
 	
-	private String passwordCheck; // 회원가입할때 패스워드 확인용
+	
+	private String passwordCheck;
+	
 	@NotBlank(groups = {RegisterGroup.class, UpdateGroup.class})
 	private String name;
 	@Email(groups = {RegisterGroup.class, UpdateGroup.class})
-	@NotBlank(groups = {RegisterGroup.class}) // 수정할때는 안보내도 통과하게끔
+	@NotBlank(groups = {RegisterGroup.class})
 	private String email;
-	@Pattern(
-		    regexp = "^01[016789]-?\\d{3,4}-?\\d{4}$",
-		    message = "올바른 휴대폰 번호 형식이 아닙니다. 000-0000-0000",
-		    groups = {RegisterGroup.class, UpdateGroup.class}
-		)
+	@Pattern(regexp = "^01(?:0|1|[6-9])-[0-9]{3,4}-[0-9]{4}$", groups = {RegisterGroup.class, UpdateGroup.class})
 	private String phone;
-	@Past(groups = {RegisterGroup.class, UpdateGroup.class}) // @Past는 날짜가 과거 이면 True , @Future는 날짜가 미래이면 True(숙박일정 쓸떄 쓰임)
+	@Past(groups = {RegisterGroup.class, UpdateGroup.class})
 	private LocalDate birth;
 	private UserFileDTO userFileDTO;
+	
+	private List<RoleDTO> roleDTOs;
+	
+	@Override
+	public Collection<? extends GrantedAuthority> getAuthorities() {
+		// TODO Auto-generated method stub
+		List<GrantedAuthority> list= new ArrayList<>();
+		
+		for(int i=0;i<roleDTOs.size();i++) {
+			GrantedAuthority g = new SimpleGrantedAuthority(roleDTOs.get(i).getRoleName());
+			list.add(g);
+		}
+		
+		return list;
+	}
+	@Override
+	public boolean isAccountNonExpired() {
+		// TODO Auto-generated method stub
+		return true;
+	}
+	@Override
+	public boolean isAccountNonLocked() {
+		// TODO Auto-generated method stub
+		return true;
+	}
+	@Override
+	public boolean isCredentialsNonExpired() {
+		// TODO Auto-generated method stub
+		return true;
+	}
+	@Override
+	public boolean isEnabled() {
+		// TODO Auto-generated method stub
+		return true;
+	}
+	
+	
 
 }

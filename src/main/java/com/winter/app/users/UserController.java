@@ -59,22 +59,7 @@ public class UserController {
 	@GetMapping("login")
 	public void login() throws Exception {}
 	
-	@PostMapping("login")
-	//유저네임,패스워드 파라미터가 넘어와서 userDTO에 담기게
-	//request보다 session이 더크니까 편한 session
-	public String login(UserDTO userDTO, HttpSession session) throws Exception { 
-		
-		userDTO = userService.detail(userDTO);
-		
-		// 처리는 알아서
-		if (userDTO == null) {
-			
-		}
-		
-		session.setAttribute("user", userDTO);
-		
-		return "redirect:/";
-	}
+
 	
 	@GetMapping("update")
 	public void update(HttpSession session,Model model) throws Exception{
