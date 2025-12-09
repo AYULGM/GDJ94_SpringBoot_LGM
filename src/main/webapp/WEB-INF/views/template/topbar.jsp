@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="jakarta.tags.core" %>    
+<%@ taglib prefix="c" uri="jakarta.tags.core" %>   
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %> 
                 <!-- Topbar -->
                 <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
 
@@ -74,8 +75,13 @@
                                     </div>
                                 </a>
                              </div>                                                            
-                         </li>                           
-				<c:if test="${not empty user}">
+                         </li>                       
+                         
+                             
+				<%-- <c:if test="${not empty user}"> --%>
+				<sec:authorize access="isAuthenticated()">
+				
+				
                         <!-- Nav Item - Alerts -->
                         <li class="nav-item dropdown no-arrow mx-1">
                             <a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button"
@@ -225,8 +231,11 @@
                                 </a>
                             </div>
                         </li>
-				</c:if>
-				<c:if test="${empty user}">
+				<%-- </c:if> --%>
+				</sec:authorize>
+				
+				<sec:authorize access="!isAuthenticated()">
+				<%-- <c:if test="${empty user}"> --%>
 					<li class="nav-item mx-1">
                             <a class="nav-link" href="/users/login" id="alertsDropdown" role="button"
                                  aria-haspopup="true" aria-expanded="false">
@@ -240,8 +249,9 @@
                                 <i class="fas fa-user-plus"></i>
                             </a>
                     </li>                              
-				</c:if>
-
+				<%-- </c:if> --%>
+				</sec:authorize>
+				
                     </ul>
 
                 </nav>

@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>    
+ <sec:authentication property="principal" var="user"/>
 <!DOCTYPE html>
 <html>
 <head>
@@ -40,6 +41,7 @@
                                 <div class="card-header py-3">
                                     <h6 class="m-0 font-weight-bold text-primary">Board Contents</h6>
                                 </div>
+                                
                                 <div class="card-body">
                                    <img src="/files/${category}/${user.userFileDTO.fileName}">
                                    <h3>${user.username}</h3>

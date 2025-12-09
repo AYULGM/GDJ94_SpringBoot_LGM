@@ -20,7 +20,7 @@ public class UserDetailSerivceImpl implements UserDetailsService{
 		userDTO.setUsername(username);
 		UserDetails userDetails;
 		try {
-			userDetails = userDAO.detail(userDTO);
+			userDetails = userDAO.detail(userDTO); // 없는 ID라면 null이 됨
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

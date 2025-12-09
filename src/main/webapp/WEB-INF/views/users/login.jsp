@@ -43,19 +43,28 @@
                                     <h6 class="m-0 font-weight-bold text-primary">${category}</h6>
                                 </div>
                                 <div class="card-body">
+                                	    <div class="alert alert-danger mt-3 mb-2 d-flex align-items-center" role="alert" 
+									         style="border-left: 4px solid #dc3545; background-color: #f8d7da;">
+									        <i class="fa fa-exclamation-circle mr-2" aria-hidden="true"></i>
+									        <strong>${param.message}</strong>
+									    </div>
+                                	
                                    <form method="post">
                                    	  
 									  <div class="form-group">
 									    <label for="username">Username</label>
 									    <!-- 귀찮으니까 테스트용도로 밸류값 미리 넣어놈 -->
-									    <input type="text" class="form-control" value="id456" id="username" name="username">
+									    <input type="text" class="form-control" value="id1" id="username" name="username">
 									  </div>
 									  <div class="form-group">
 									    <label for="password">Password</label>
 									    <!-- 귀찮으니까 테스트용도로 밸류값 미리 넣어놈 -->
-									    <input type="password" class="form-control" value="pw123" id="password" name="password">
+									    <input type="password" class="form-control" value="pw1" id="password" name="password">
 									  </div>									  
-									
+									  <div class="form-group form-check">
+									    <input type="checkbox" name="rememberme" class="form-check-input" id="exampleCheck1">
+									    <label class="form-check-label" for="exampleCheck1">Remember Me(Auto Login)</label>
+									  </div>
 									  <button type="submit" class="btn btn-primary">Submit</button>
 									</form>
                                 </div>

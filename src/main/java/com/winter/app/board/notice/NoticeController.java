@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -98,12 +99,14 @@ public class NoticeController {
 	// (25.12.01) 5개까지 받으니 배열로선언
 	// (25.12.04) @Valid는 컨트롤러로 보낼때 중간에서 검증을 하고 보냄 (검증해서 실패했으면 처리는 우리가 알아서)
 	// @Valid 무조건 바로 뒤에 BindingResult(검증결과를 받는 애)붙임
-	public String add(@ModelAttribute("dto") @Valid NoticeDTO noticeDTO,BindingResult bindingResult, MultipartFile[] attach) throws Exception {
+	public String add(@ModelAttribute("dto") @Valid NoticeDTO noticeDTO,BindingResult bindingResult, MultipartFile[] attach, Authentication authentication) throws Exception {
 		
 		// 검증은 이렇게 체크한다. True면 에러가 있는거임
 		if(bindingResult.hasErrors()) {
 			return "board/add";
 		}
+		
+		noticeDTO.setBoardWriter(authentication.getName());
 		
 		int result = noticeService.add(noticeDTO, attach);
 		

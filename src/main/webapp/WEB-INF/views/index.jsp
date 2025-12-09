@@ -2,6 +2,7 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -46,16 +47,32 @@
                     </div>
                     
                     <!-- 생성한 contents 작성(내용이 바뀌는부분) -->
-                    <c:if test="${not empty user}">
+                    <!-- 인증되었다면(로그인 됐다) -->
+                    <sec:authorize access="isAuthenticated()">
                     	<h1>Login 성공</h1>
+                    	<!-- authentication은 사용자정보를 담고있음, principal은 Object라 형변환해줘야함, 근데 EL태그는 자동으로 그 객체를 따라감 -->
+                    	<sec:authentication property="principal" var="user"/>
+                    	
+                    	<h1>${user.username}</h1>
+                    	<h1>${user.email}</h1>
+                    	<h3>
+                    		<sec:authentication property="principal.phone"/>
+                    	</h3>
+                    	<h2>
+                    		<!-- getName()과 같은효과 -->
+                    		<sec:authentication property="name"/>
+                    	</h2>
+                    	
+                    	<!-- 스코프명.변수명인데 스코프는 작은것부터 찾음, 그래서 바로위에 var="user"를 찾아감 -->
                     	<spring:message code="message.welcome" arguments="${user.username},${user.birth}" argumentSeparator="," var="m"></spring:message>
                     	<hr>
                     	<h3>${m}</h3>
-                    </c:if>
+                    </sec:authorize>
                     
-                    <c:if test="${empty user}">
+                    <sec:authorize access="!isAuthenticated()">
                     	<h1>Login 필요</h1>
-                    </c:if>
+                    	
+                    </sec:authorize>
                     
                     </div>
 				</div>

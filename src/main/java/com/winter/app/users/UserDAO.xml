@@ -10,7 +10,7 @@
 		
 		<insert id="userFileAdd" parameterType="UserFileDTO">
 			INSERT INTO profile (file_name, file_origin, username)
-			(#{fileName}, #{fileOrigin}, #{username})
+			VALUES(#{fileName}, #{fileOrigin}, #{username})
 		</insert>
 		
 		<insert id="roleAdd" parameterType="UserDTO">
@@ -40,6 +40,10 @@
     		<result column="email" property="email"/>
     		<result column="phone" property="phone"/>
     		<result column="birth" property="birth"/>
+    		<result column="account_non_expired" property="accountNonExpired" />
+    		<result column="account_non_locked" property="accountNonLocked" />
+    		<result column="credentials_non_expired" property="credentialsNonExpired"/>
+    		<result column="enabled" property="enabled"/>
     		<association property="userFileDTO" javaType="UserFileDTO">
     			<id column="file_num" property="fileNum" />
     			<result column="file_name" property="fileName"/>

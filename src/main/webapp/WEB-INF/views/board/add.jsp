@@ -55,13 +55,17 @@
              	<form:hidden path="boardNum"/>
            <%-- <input type="hidden" name="boardNum" value="${dto.boardNum}"> --%>
 					<!-- 개발자도구 열어보면 value값이 들어간게 보인다. -->
+					
 					  <div class="form-group">
+					  
 					  <!-- 이건 굳이 쓸일없어서 주석처리 -->
 					  <%-- <form:label path="boardWriter"></form:label> --%>
 					    <label for="writer">작성자</label>
 					    <!-- path가 name이 되서 쓸 필요없음 -->
-					    <form:input path="boardWriter" cssClass="form-control" id="writer"/>
-				<%-- 	<input type="text" class="form-control" value="${dto.boardWriter}" id="writer" name="boardWriter"> --%>					    <small id="emailHelp" class="form-text text-muted">name 또는 nickname을 입력하시면 됩니다.</small>
+					    <form:input path="boardWriter" cssClass="form-control" id="writer" disabled="true"/> 
+					    <!-- 입력해도 파라미터안넘어가게 disabled(25.12.09) -->
+				<%-- 	<input type="text" class="form-control" value="${dto.boardWriter}" id="writer" name="boardWriter"> --%>					   
+					  <small id="emailHelp" class="form-text text-muted">name 또는 nickname을 입력하시면 됩니다.</small>
 					  </div>
 					  <div class="form-group">
 					    <label for="title">글 제목</label>
