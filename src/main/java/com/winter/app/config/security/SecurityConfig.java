@@ -10,6 +10,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
+import com.winter.app.users.UserDetailServiceImpl;
+
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
@@ -22,6 +24,8 @@ public class SecurityConfig {
 	private Logout logout;
 	@Autowired
 	private LogoutSuccess logoutSuccess;
+	@Autowired
+	private UserDetailServiceImpl userDetailServiceImpl;
 	
 	//정적자원들을 Security에서 제외
 	@Bean
@@ -86,9 +90,33 @@ public class SecurityConfig {
 					.logoutSuccessHandler(logoutSuccess)
 					.invalidateHttpSession(true)
 					.deleteCookies("JSESSIONID")
+					.deleteCookies("remember-me") // 리멤버미 쿠키의 이름
 					;
 			})
 			
+			.rememberMe(remember->{
+				remember
+						.rememberMeParameter("rememberme") // 파라미터로 넘어오는 rememberMe의 name이 뭐냐, login.jsp에 name을 적어주면됨
+						.tokenValiditySeconds(60) // 60초동안 유지하겠다.
+						.key("rememberkey") // 만들어지는 쿠키의 토큰을 무엇으로 할거냐? (임의로 작명)
+						.userDetailsService(userDetailServiceImpl)
+						.authenticationSuccessHandler(loginSuccessHandler)
+						.useSecureCookie(false); // 쿠키의 보안여부(true하면 application에 보안여부 체크된걸 볼수있음)
+			})
+			.sessionManagement(session -> { // 근데 코드가 안먹는다고 하심 그냥 이런 기능이 있다 정도로만 생각
+				session
+						.invalidSessionUrl("/") // 튕기면 루트로 가라.
+						.maximumSessions(1) // 1명(1개의 세션)만 허용
+						.maxSessionsPreventsLogin(true) // false - 이전 사용자 세션만료,  true - 현재 접속 하려는 사용자 인증 실패해서 로그인 못하게하는방법. 
+						.expiredUrl("/users/login")
+						;
+			})
+			
+			.oauth2Login(t -> {
+				t.userInfoEndpoint((s)->{
+					s.userService(userDetailServiceImpl);
+				});
+			})
 			
 			;
 	

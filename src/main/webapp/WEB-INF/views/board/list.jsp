@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -105,9 +106,19 @@
 						  </ul>
 						</nav>
 						
+						<!-- div태그가 아니라 a태그를 감싸도 차이 없음(25.12.10) -->
+						<sec:authorize access="isAuthenticated()">
 						<div>
-							<a href="./add" class="btn btn-primary">글쓰기</a>
+						<c:if test="${category ne 'notice'}">
+								<a href="./add" class="btn btn-primary">글쓰기</a>
+						</c:if>
+						<c:if test="${category eq 'notice'}">
+							<sec:authorize access="hasRole('ADMIN')">
+								<a href="./add" class="btn btn-primary">글쓰기</a>
+							</sec:authorize>
+						</c:if>
 						</div>
+						</sec:authorize>
 						
                     </div>
                     

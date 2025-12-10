@@ -5,10 +5,12 @@ import java.util.Collection;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -24,7 +26,7 @@ import lombok.ToString;
 @Setter
 @Getter
 @ToString
-public class UserDTO implements UserDetails{
+public class UserDTO implements UserDetails, OAuth2User{
 	
 	@NotBlank(groups = {RegisterGroup.class})
 	private String username;
@@ -49,11 +51,15 @@ public class UserDTO implements UserDetails{
 	
 	private List<RoleDTO> roleDTOs;
 	
+	// UserDetail
 	private boolean accountNonExpired;
 	private boolean accountNonLocked;
 	private boolean credentialsNonExpired;
 	private boolean enabled;
 	
+	
+	
+	//Oauth2User
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		// TODO Auto-generated method stub
@@ -66,6 +72,11 @@ public class UserDTO implements UserDetails{
 		
 		return list;
 	}
+
+
+	//Oauth2 User
+	private Map<String, Object> attributes;
+	private String sns;
 	
 	// 어차피 @게터@세터 있으니까 아래는 다 주석처리했슴..
 	// 아래 4개중에 1개라도 return값에 false가 있으면 로그인 실패(주석으로 false로 바꿨을떄 메시지를 써놓음)

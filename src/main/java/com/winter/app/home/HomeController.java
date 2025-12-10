@@ -19,7 +19,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class HomeController {
 	
-	//로그인한 정보를 JAVA단에서 쓰고 싶을때 총 4가지 방법이 있다.
+	// 로그인한 정보를 JAVA단에서 쓰고 싶을때 총 5가지 방법이 있다. 아무거나 쓰길.(index4는 에러떴었긴함)
 	
 	@GetMapping("/")
 	public String home() {
