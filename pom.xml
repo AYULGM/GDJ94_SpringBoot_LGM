@@ -32,6 +32,12 @@
 	</properties>
 	<dependencies>
 	
+		<!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-webflux (25.12.11 추가)-->
+		<dependency>
+		    <groupId>org.springframework.boot</groupId>
+		    <artifactId>spring-boot-starter-webflux</artifactId>
+		</dependency>
+		
 		<!-- https://mvnrepository.com/artifact/org.springframework.security/spring-security-oauth2-client -->
 		<dependency>
 		    <groupId>org.springframework.security</groupId>
