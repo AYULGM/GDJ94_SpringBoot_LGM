@@ -53,6 +53,8 @@
                                 	
                                 	<a href="./update" class="btn btn-primary">Update</a>
                                 	<a href="./change" class="btn btn-danger">비밀번호 변경</a>
+                                	<!-- security엔 탈퇴관련 기능이없고, 나중에 컨펌기능도 하나 만들면좋을듯 -->
+                                	<a href="./delete" class="btn btn-info">회원 탈퇴</a>
                                 	<form action="./delete" method="post">
                                 		<input type="hidden" name="boardNum" value="${dto.boardNum}">
                                 		<button id="del" class="btn btn-danger">Delete</button>

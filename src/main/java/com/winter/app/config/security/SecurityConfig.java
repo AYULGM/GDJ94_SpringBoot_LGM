@@ -87,7 +87,7 @@ public class SecurityConfig {
 					.logoutUrl("/users/logout")
 //					.logoutSuccessUrl("/")
 					.addLogoutHandler(this.logout)
-					.logoutSuccessHandler(logoutSuccess)
+//					.logoutSuccessHandler(logoutSuccess) // 이걸 주석처리해야 로그아웃창이 잘뜨네.
 					.invalidateHttpSession(true)
 					.deleteCookies("JSESSIONID")
 					.deleteCookies("remember-me") // 리멤버미 쿠키의 이름

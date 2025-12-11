@@ -15,9 +15,12 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.reactive.function.BodyInserters;
+import org.springframework.web.reactive.function.client.WebClient;
 
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
+import reactor.core.publisher.Mono;
 
 @Controller
 @RequestMapping("/users/**")
@@ -28,10 +31,39 @@ public class UserController {
 	
 	@Value("${category.user}")
 	private String category;
+	
+	@Value("${spring.security.oauth2.client.registration.kakao.client-secret}")
+	private String adminKey;
 
 	@ModelAttribute("category")
 	private String getCategory() {
 		return this.category;
+	}
+	
+	// 나중에 postMapping으로 바꾸면 된다고 하심(25.12.11)
+	@GetMapping("delete")
+	public String delete(Authentication authentication) throws Exception {
+		// 1. 일반회원(Cascade를 걸어줘서 같이 삭제하게하든가, 자식이 삭제되면 부모에 null을 넣게하든가, 컬럼하나 만들어서 삭제된 회원은 1을 넣던가)
+		// 탈퇴 후 로그아웃을 진행(세션에 있는 Data가 남아있기 때문)
+		
+		// 2.소셜 로그인 (일반회원처럼 동일하게 하면됨) , 나중에 분기문 추가해야함
+		// DB에서 작업
+		WebClient webClient = WebClient.create();
+		
+		Mono<String> result = webClient.post()
+										.uri("https://kapi.kakao.com/v1/user/logout") // 이건 단순 로그아웃 URI
+										// https://kapi.kakao.com/v1/user/unlink // 이걸넣으면 연결해제(회원탈퇴)
+										.header("Authorization", "KakaoAK "+adminKey) // KakaoAK하고 스페이스바 하나 넣어줘야하는거 주의 (문서 > 카카오 로그인 > REST API에서 로그아웃 목차)
+										.header("Content-Type", "application/x-www-form-urlencoded;charset=utf-8")
+										.body(BodyInserters.fromFormData("target_id_type", "user_id").with("target_id", authentication.getName()))
+										.retrieve()
+										.bodyToMono(String.class)
+										;
+				 
+		System.out.println(result.block());
+		
+		return "redirect:./logout"; // redirect는 JSP가 아니라 URL처리임
+				 
 	}
 	
 	@GetMapping("register")
