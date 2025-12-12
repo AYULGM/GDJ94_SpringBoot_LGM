@@ -48,6 +48,7 @@
                     
                     <!-- 생성한 contents 작성(내용이 바뀌는부분) -->
                     <!-- 인증되었다면(로그인 됐다) -->
+                    <h1>Remote Test</h1>
                     <sec:authorize access="isAuthenticated()">
                     	<h1>Login 성공</h1>
                     	<!-- authentication은 사용자정보를 담고있음, principal은 Object라 형변환해줘야함, 근데 EL태그는 자동으로 그 객체를 따라감 -->
