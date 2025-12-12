@@ -42,7 +42,7 @@
                     
                     <div>
                     <!-- code엔 message properties에 들어있는 키(Key)를 적는다.  -->
-                    	<spring:message code="hi"></spring:message>
+                    
                     	<spring:message code="hello" text="키가없을때 기본 메시지"></spring:message>
                     </div>
                     

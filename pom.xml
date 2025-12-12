@@ -140,7 +140,32 @@
 	</dependencies>
 
 	<build>
+		<!--(25.12.12) 추가 -->
+		<resources>
+<!--			<resource>
+			<directory>src/main/resources</directory>
+				<includes>
+					<include>**/*.xml</include>
+				</includes>
+			</resource>-->
+			<resource>
+				<directory>src/main/java</directory>
+				<includes>
+					<include>**/*.xml</include>
+				</includes>
+			</resource>
+		</resources>
+		
 		<plugins>
+			<!-- 25.12.12추가 대기썜 배포관리 노션, 테스트스킵  -->
+	        <plugin>
+	            <groupId>org.apache.maven.plugins</groupId>
+	            <artifactId>maven-surefire-plugin</artifactId>
+	            <configuration>
+	                <skipTests>true</skipTests>
+	            </configuration>
+	        </plugin>
+		
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
