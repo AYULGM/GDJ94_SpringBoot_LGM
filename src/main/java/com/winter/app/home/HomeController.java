@@ -2,6 +2,7 @@ package com.winter.app.home;
 
 import java.security.Principal;
 import java.util.Enumeration;
+import java.util.Random;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -22,7 +23,8 @@ public class HomeController {
 	// 로그인한 정보를 JAVA단에서 쓰고 싶을때 총 5가지 방법이 있다. 아무거나 쓰길.(index4는 에러떴었긴함)
 	
 	@GetMapping("/")
-	public String home() {
+	public String home() throws Exception { 
+		
 		return "index";
 	}
 	

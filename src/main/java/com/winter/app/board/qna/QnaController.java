@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -37,6 +38,11 @@ public class QnaController {
 	@GetMapping("list")
 	public String list(Pager pager, Model model) throws Exception {
 		List<BoardDTO> ar = qnaService.list(pager);
+		
+		// 예외처리 메서드 잘 동작하는지 테스트 코드
+//		if(pager != null) {
+//			throw new NullPointerException();
+//		}
 		
 		model.addAttribute("list", ar);
 		model.addAttribute("pager", pager);
@@ -138,4 +144,7 @@ public class QnaController {
 	public void fileDown(BoardFileDTO boardFileDTO) throws Exception {
 		boardFileDTO = qnaService.fileDetail(boardFileDTO);
 	}
+	
+	
+	
 }
