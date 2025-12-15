@@ -49,7 +49,7 @@
 									        <strong>${param.message}</strong>
 									    </div>
                                 	
-                                   <form method="post">
+                                   <form method="post" action="/users/loginProcess">
                                    	  
 									  <div class="form-group">
 									    <label for="username">Username</label>

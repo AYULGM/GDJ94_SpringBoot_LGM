@@ -3,13 +3,18 @@ package com.winter.app.config.security;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
+import com.winter.app.config.security.jwt.JwtAuthenticationFilter;
+import com.winter.app.config.security.jwt.JwtLoginFilter;
+import com.winter.app.config.security.jwt.JwtTokenManager;
 import com.winter.app.users.UserDetailServiceImpl;
 
 @Configuration
@@ -26,6 +31,15 @@ public class SecurityConfig {
 	private LogoutSuccess logoutSuccess;
 	@Autowired
 	private UserDetailServiceImpl userDetailServiceImpl;
+	
+	// ----------------- JWT 추가 --------------------
+	
+	 // 나중에 얘를 필요로 하는애가 생기기떄문에 얘는 어노테이션걸었음
+	@Autowired
+	private JwtTokenManager jwtTokenManager;
+	
+	@Autowired
+	private AuthenticationConfiguration authenticationConfiguration;
 	
 	//정적자원들을 Security에서 제외
 	@Bean
@@ -63,24 +77,10 @@ public class SecurityConfig {
 			
 			//Login form과 그외 관련 설정
 			.formLogin((form)->{
-				form
-					//로그인폼 jsp 경로로 가는 url과 로그인 처리 url 작성
-					.loginPage("/users/login")
-					// 로그인 진행할 URL(위에 코드가 있어서 굳이 안적어도 잘됨, 혹시라도 문제가 생기면 적는 코드)
-					.loginProcessingUrl("/users/login")
-					//.usernameParameter("id")
-					//.passwordParameter("pw")
-					//.defaultSuccessUrl("/") // 성공했을때 리다이렉트 URL
-					//.failureUrl("/")
-					
-					.failureHandler(loginFailHandler) // 얘도 똑같이 Autowired로 주입받음
-					.successHandler(loginSuccessHandler) // Autowired로 주입받음
-					
-					;
-				
-				
-				
+				// front가 분리되었을 때(25.12.15)
+				form.disable(); // 폼을 비활성화 하겠다. 로그인페이지가 필요없기 때문에. 여기서는 데이터만 제공하겠다.
 			})
+				
 			
 			.logout((logout)->{
 				logout
@@ -91,26 +91,22 @@ public class SecurityConfig {
 					.invalidateHttpSession(true)
 					.deleteCookies("JSESSIONID")
 					.deleteCookies("remember-me") // 리멤버미 쿠키의 이름
+					.deleteCookies("access-token", "refresh-token") //추가 (25.12.15)
 					;
 			})
 			
-			.rememberMe(remember->{
-				remember
-						.rememberMeParameter("rememberme") // 파라미터로 넘어오는 rememberMe의 name이 뭐냐, login.jsp에 name을 적어주면됨
-						.tokenValiditySeconds(60) // 60초동안 유지하겠다.
-						.key("rememberkey") // 만들어지는 쿠키의 토큰을 무엇으로 할거냐? (임의로 작명)
-						.userDetailsService(userDetailServiceImpl)
-						.authenticationSuccessHandler(loginSuccessHandler)
-						.useSecureCookie(false); // 쿠키의 보안여부(true하면 application에 보안여부 체크된걸 볼수있음)
-			})
-			.sessionManagement(session -> { // 근데 코드가 안먹는다고 하심 그냥 이런 기능이 있다 정도로만 생각
+			.sessionManagement(session -> {
 				session
-						.invalidSessionUrl("/") // 튕기면 루트로 가라.
-						.maximumSessions(1) // 1명(1개의 세션)만 허용
-						.maxSessionsPreventsLogin(true) // false - 이전 사용자 세션만료,  true - 현재 접속 하려는 사용자 인증 실패해서 로그인 못하게하는방법. 
-						.expiredUrl("/users/login")
+					.sessionCreationPolicy(SessionCreationPolicy.STATELESS) // 세션 유지 방식을 쓰지않겠다.
 						;
 			})
+			
+			.httpBasic((h)-> {
+				h.disable(); // http 기본은 쓰지않겠다.
+			})
+			
+			.addFilter(new JwtAuthenticationFilter(jwtTokenManager, authenticationConfiguration.getAuthenticationManager())) // 로그인되어있나? 순서 중요
+			.addFilter(new JwtLoginFilter(jwtTokenManager, authenticationConfiguration.getAuthenticationManager())) // 로그인 시도 시
 			
 			.oauth2Login(t -> {
 				t.userInfoEndpoint((s)->{
