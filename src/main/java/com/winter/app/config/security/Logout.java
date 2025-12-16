@@ -52,7 +52,7 @@ public class Logout implements LogoutHandler{
 	// 2) 카카오 계정과 함께 로그아웃
 		UserDTO userDTO = (UserDTO)authentication.getPrincipal();
 		// 일반회원이 로그인하는거냐 아니냐로 분기처리
-		if(userDTO.getSns() != null) { // 소셜로그인
+		if(userDTO.getSns() != null || userDTO.getSns().equals("")) { // 소셜로그인
 			try {
 				response.sendRedirect("https://kauth.kakao.com/oauth/logout?client_id="+restKey+"&logout_redirect_uri=http://localhost/");
 			} catch (IOException e) {

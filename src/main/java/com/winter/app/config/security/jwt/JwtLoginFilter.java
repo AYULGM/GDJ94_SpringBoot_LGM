@@ -1,8 +1,15 @@
 package com.winter.app.config.security.jwt;
 
 import java.io.IOException;
+import java.net.URLEncoder;
 
+import org.springframework.security.authentication.AccountExpiredException;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.CredentialsExpiredException;
+import org.springframework.security.authentication.DisabledException;
+import org.springframework.security.authentication.InternalAuthenticationServiceException;
+import org.springframework.security.authentication.LockedException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
@@ -53,7 +60,7 @@ public class JwtLoginFilter extends UsernamePasswordAuthenticationFilter {
 		
 		Cookie cookie = new Cookie("access-token", accesstoken);
 		cookie.setPath("/"); // 어느 URL이 왔을때만 쿠키를 보낼거야?
-		cookie.setMaxAge(60); // 1분
+		cookie.setMaxAge(600); // 60은 1분 -> 600은 10분(테스트용)
 		cookie.setHttpOnly(true); // http 상태에서만 받겠다는 뜻
 		
 		response.addCookie(cookie);
@@ -70,7 +77,28 @@ public class JwtLoginFilter extends UsernamePasswordAuthenticationFilter {
 	@Override
 	protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response,
 			AuthenticationException failed) throws IOException, ServletException {
-		super.unsuccessfulAuthentication(request, response, failed);
+		String message = "로그인 실패 ㅠㅠ";
+		if(failed instanceof AccountExpiredException) {
+			message = "계정 유효기간 만료";
+		}
+		if(failed instanceof LockedException) {
+			message = "계정 잠김";
+		}
+		if(failed instanceof CredentialsExpiredException) {
+			message = "비밀번호 유효기간 만료";
+		}
+		if(failed instanceof DisabledException) {
+			message = "휴면 계정";
+		}
+		if(failed instanceof BadCredentialsException) {
+			message = "비밀번호 틀림";
+		}
+		if(failed instanceof InternalAuthenticationServiceException) {
+			message = "아이디 틀림";
+		}
+		
+		message = URLEncoder.encode(message, "UTF-8");
+		response.sendRedirect("./login?message=" + message);
 	}
 
 }
